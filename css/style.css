@@ -3,12 +3,31 @@ body {
 }
 
 .buttons {
-    padding: 15px 30px;
-    border-radius: 12px;
-    background-color: blanchedalmond;
-    margin: 50px;
+    font-size: 20px;
+    border-radius: 15px;
+    padding: 25px 50px;
 }
 
 .buttons:focus {
     outline: none;
+}
+
+.button1 {
+    margin: 50px;
+}
+
+.formStep2 {
+    width: 30%;
+    margin: auto;
+    display: block;
+    margin-top: 100px;
+}
+
+.backSave {
+    margin-top: 80px;
+}
+
+.save {
+    float: right;
+    
 }
