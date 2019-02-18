@@ -34,3 +34,16 @@ body {
 .error {
     display: none;
 }
+
+.layerButton, .feed {
+    margin-left: 50px;
+    margin-top: 50px;
+}
+
+.feed {
+    font-size: 30px;
+}
+
+.feed div {
+    display: inline-block;
+}

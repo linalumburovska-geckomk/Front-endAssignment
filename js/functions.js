@@ -33,6 +33,7 @@ App.prototype.isPageValid = function(page) {
     return loadState && initState && disposeState
 }
 
+// ------------------------------------------
 var Step1Page = function(app) {
     this.app = app
 }
@@ -64,6 +65,8 @@ Step1Page.prototype.init = function() {
 Step1Page.prototype.dispose = function() {
     console.log('dispose')
 }
+
+// ------------------------------------------
 
 var Step2Page = function(app) {
     this.app = app
@@ -106,11 +109,13 @@ Step2Page.prototype.init = function() {
 }
 
 Step2Page.prototype.dispose = function() {
-    this.app.data['name'] = $('#name').val()
+    this.app.data['name'] = $('#name').val().toUpperCase()
     this.app.data['description'] = $('#description').val()
     this.app.data['imageurl'] = $('#imageURL').val()
     console.log('dispose')
 }
+
+// ------------------------------------------
 
 var Step3Page = function(app) {
     this.app = app
@@ -133,6 +138,10 @@ Step3Page.prototype.load = function() {
 
 Step3Page.prototype.init = function() {
     $('#nameStep3').append(this.app.data['name'])
+    var self=this
+    $("#createLayer").on('click', function(){
+        self.app.forward('step4')
+    })
 
 }
 
@@ -140,10 +149,44 @@ Step3Page.prototype.dispose = function() {
     console.log('dispose')
 }
 
+// ------------------------------------------
+var Step4Page = function(app) {
+    this.app = app
+}
+
+Step4Page.prototype.load = function() {
+    return new Promise(function(resolve) {
+        $.ajax({
+            async: true,
+            url: "step4.html",
+            type: 'GET',
+            success: function(data) {
+                $('#root').empty()
+                $('#root').append(data)
+                resolve()
+            }
+        });
+    })
+}
+
+Step4Page.prototype.init = function() {
+    // $('#nameStep3').append(this.app.data['name'])
+    console.log("init")
+
+}
+
+Step4Page.prototype.dispose = function() {
+    console.log('dispose')
+}
+
+
+// ------------------------------------------
+
 $('window').ready(function() {
     var app = new App()
     app.addPage('step1', new Step1Page(app))
     app.addPage('step2', new Step2Page(app))
     app.addPage('step3', new Step3Page(app))
+    app.addPage('step4', new Step4Page(app))
     app.forward('step1')
 })
