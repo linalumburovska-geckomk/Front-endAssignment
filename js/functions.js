@@ -171,7 +171,17 @@ Step4Page.prototype.load = function() {
 
 Step4Page.prototype.init = function() {
     // $('#nameStep3').append(this.app.data['name'])
-    console.log("init")
+    var self=this
+    $('#backStep4').on('click', function(){
+        self.app.forward('step3')
+    })
+    $('#saveStep4').on('click', function(){
+        if($('#nameStep4').val()!=''){
+            self.app.forward('step5')
+        } else {
+            $('#errorName').show()
+        }
+    })
 
 }
 
@@ -181,6 +191,34 @@ Step4Page.prototype.dispose = function() {
 
 
 // ------------------------------------------
+var Step5Page = function(app) {
+    this.app = app
+}
+
+Step5Page.prototype.load = function() {
+    return new Promise(function(resolve) {
+        $.ajax({
+            async: true,
+            url: "step5.html",
+            type: 'GET',
+            success: function(data) {
+                $('#root').empty()
+                $('#root').append(data)
+                resolve()
+            }
+        });
+    })
+}
+
+Step5Page.prototype.init = function() {
+   console.log("init")
+}
+
+Step5Page.prototype.dispose = function() {
+    console.log('dispose')
+}
+
+// ------------------------------------------
 
 $('window').ready(function() {
     var app = new App()
@@ -188,5 +226,6 @@ $('window').ready(function() {
     app.addPage('step2', new Step2Page(app))
     app.addPage('step3', new Step3Page(app))
     app.addPage('step4', new Step4Page(app))
+    app.addPage('step5', new Step5Page(app))
     app.forward('step1')
 })
