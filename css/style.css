@@ -29,5 +29,8 @@ body {
 
 .save {
     float: right;
-    
+}
+
+.error {
+    display: none;
 }
