@@ -1,8 +1,12 @@
+var clicked ='';
+var layersGlobal=[];
+var index=-1;
+
 var App = function() {
     this.pageMap = {}
     this.currentPage = null
     this.data = {}
-    this.layers=[];
+    this.layers=[]
 }
 
 App.prototype.addPage = function(url, page) {
@@ -62,8 +66,8 @@ Step1Page.prototype.init = function() {
     })
 }
 
+
 Step1Page.prototype.dispose = function() {
-    console.log('dispose')
 }
 
 // ------------------------------------------
@@ -108,11 +112,11 @@ Step2Page.prototype.init = function() {
     })
 }
 
+
 Step2Page.prototype.dispose = function() {
     this.app.data['name'] = $('#name').val().toUpperCase()
     this.app.data['description'] = $('#description').val()
     this.app.data['imageurl'] = $('#imageURL').val()
-    console.log('dispose')
 }
 
 // ------------------------------------------
@@ -146,7 +150,6 @@ Step3Page.prototype.init = function() {
 }
 
 Step3Page.prototype.dispose = function() {
-    console.log('dispose')
 }
 
 // ------------------------------------------
@@ -175,6 +178,7 @@ Step4Page.prototype.init = function() {
         self.app.forward('step3')
     })
     $('#saveStep4').on('click', function(){
+        var nameStep4=$("#nameStep4").val()
         if(nameStep4!=''){
             self.app.forward('step5')
         } else {
@@ -185,16 +189,17 @@ Step4Page.prototype.init = function() {
 }
 
 Step4Page.prototype.dispose = function() {
-    console.log('dispose')
     var nameStep4=$("#nameStep4").val()
     if(nameStep4!='') {
         this.app.layers.push(nameStep4)
-    }
+        layersGlobal.push(nameStep4)
+    } 
     
 }
 
 
-// ------------------------------------------
+//-----------------------------------------
+
 var Step5Page = function(app) {
     this.app = app
 }
@@ -223,15 +228,63 @@ Step5Page.prototype.init = function() {
     
     for(var i=0; i<this.app.layers.length;i++) {
         var layer=this.app.layers[i]
-        var buttonEdit="<button class='btn btn-secondary editButton'>Edit</button>"
+        var buttonEdit="<button class='btn btn-secondary editButton' id='editButton" + i + "' >Edit</button>"
         var appendRow="<tr><td>"+ layer +"</td><td>" + buttonEdit + "</td></tr>"
         $('#tableLayers tbody').append(appendRow)
+    }    
+
+    for(var i=0; i<layersGlobal.length;i++) {
+        $("#editButton"+i).on('click', function(){
+            var add=layersGlobal[i-1]
+            clicked=add;
+            index=i-1;
+            self.app.forward('step4Edit')
+        })
     }
+
 }
 
 Step5Page.prototype.dispose = function() {
-    console.log('dispose')
+    this.app.data['edit']=clicked;
 }
+
+// ------------------------------------------
+var Step4EditPage = function(app) {
+    this.app = app
+}
+
+Step4EditPage.prototype.load = function() {
+    return new Promise(function(resolve) {
+        $.ajax({
+            async: true,
+            url: "step4Edit.html",
+            type: 'GET',
+            success: function(data) {
+                $('#root').empty()
+                $('#root').append(data)
+                resolve()
+            }
+        });
+    })
+}
+
+Step4EditPage.prototype.init = function() {
+    $("#nameEdit").val(this.app.data['edit'])
+
+    var self=this
+    $("#backStep4Edit").on('click', function(){
+        self.app.forward('step3')        
+    })
+
+    $("#saveStep4Edit").on('click', function(){
+        self.app.forward('step5')
+    })
+
+}
+
+Step4EditPage.prototype.dispose = function() {    
+}
+
 
 // ------------------------------------------
 
@@ -241,6 +294,7 @@ $('window').ready(function() {
     app.addPage('step2', new Step2Page(app))
     app.addPage('step3', new Step3Page(app))
     app.addPage('step4', new Step4Page(app))
+    app.addPage('step4Edit', new Step4EditPage(app))
     app.addPage('step5', new Step5Page(app))
     app.forward('step1')
 })
