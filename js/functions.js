@@ -2,6 +2,7 @@ var App = function() {
     this.pageMap = {}
     this.currentPage = null
     this.data = {}
+    this.layers=[];
 }
 
 App.prototype.addPage = function(url, page) {
@@ -54,7 +55,6 @@ Step1Page.prototype.load = function() {
 }
 
 Step1Page.prototype.init = function() {
-    console.log(this.app.data['haha'])
     var self = this
     $('#button1').on('click', function(e) {
         e.preventDefault()
@@ -137,7 +137,7 @@ Step3Page.prototype.load = function() {
 }
 
 Step3Page.prototype.init = function() {
-    $('#nameStep3').append(this.app.data['name'])
+    $('#nameFeed').append(this.app.data['name'])
     var self=this
     $("#createLayer").on('click', function(){
         self.app.forward('step4')
@@ -170,13 +170,12 @@ Step4Page.prototype.load = function() {
 }
 
 Step4Page.prototype.init = function() {
-    // $('#nameStep3').append(this.app.data['name'])
     var self=this
     $('#backStep4').on('click', function(){
         self.app.forward('step3')
     })
     $('#saveStep4').on('click', function(){
-        if($('#nameStep4').val()!=''){
+        if(nameStep4!=''){
             self.app.forward('step5')
         } else {
             $('#errorName').show()
@@ -187,6 +186,11 @@ Step4Page.prototype.init = function() {
 
 Step4Page.prototype.dispose = function() {
     console.log('dispose')
+    var nameStep4=$("#nameStep4").val()
+    if(nameStep4!='') {
+        this.app.layers.push(nameStep4)
+    }
+    
 }
 
 
@@ -211,7 +215,18 @@ Step5Page.prototype.load = function() {
 }
 
 Step5Page.prototype.init = function() {
-   console.log("init")
+    $('#nameFeed').append(this.app.data['name'])
+    var self=this
+    $("#createLayer").on('click', function(){
+        self.app.forward('step4')
+    })
+    
+    for(var i=0; i<this.app.layers.length;i++) {
+        var layer=this.app.layers[i]
+        var buttonEdit="<button class='btn btn-secondary editButton'>Edit</button>"
+        var appendRow="<tr><td>"+ layer +"</td><td>" + buttonEdit + "</td></tr>"
+        $('#tableLayers tbody').append(appendRow)
+    }
 }
 
 Step5Page.prototype.dispose = function() {
