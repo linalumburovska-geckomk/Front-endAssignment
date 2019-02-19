@@ -6,7 +6,6 @@ var App = function() {
     this.pageMap = {}
     this.currentPage = null
     this.data = {}
-    this.layers=[]
 }
 
 App.prototype.addPage = function(url, page) {
@@ -180,6 +179,7 @@ Step4Page.prototype.init = function() {
     $('#saveStep4').on('click', function(){
         var nameStep4=$("#nameStep4").val()
         if(nameStep4!=''){
+            layersGlobal.push(nameStep4)
             self.app.forward('step5')
         } else {
             $('#errorName').show()
@@ -189,12 +189,7 @@ Step4Page.prototype.init = function() {
 }
 
 Step4Page.prototype.dispose = function() {
-    var nameStep4=$("#nameStep4").val()
-    if(nameStep4!='') {
-        this.app.layers.push(nameStep4)
-        layersGlobal.push(nameStep4)
-    } 
-    
+
 }
 
 
@@ -226,23 +221,26 @@ Step5Page.prototype.init = function() {
         self.app.forward('step4')
     })
     
-    for(var i=0; i<this.app.layers.length;i++) {
-        var layer=this.app.layers[i]
-        var buttonEdit="<button class='btn btn-secondary editButton' id='editButton" + i + "' >Edit</button>"
+
+    for(var i=0; i<layersGlobal.length;i++) {
+        var layer=layersGlobal[i]
+        var buttonEdit="<button class='btn btn-secondary editButton' id='" + i + "' >Edit</button>"
         var appendRow="<tr><td>"+ layer +"</td><td>" + buttonEdit + "</td></tr>"
         $('#tableLayers tbody').append(appendRow)
     }    
 
     for(var i=0; i<layersGlobal.length;i++) {
-        $("#editButton"+i).on('click', function(){
-            var add=layersGlobal[i-1]
-            clicked=add;
-            index=i-1;
+        $("#"+i+"").click(function(){
+            index= $(this).attr('id')
+            var add=layersGlobal[index]
+            clicked=add            
             self.app.forward('step4Edit')
         })
     }
 
 }
+
+
 
 Step5Page.prototype.dispose = function() {
     this.app.data['edit']=clicked;
@@ -277,6 +275,14 @@ Step4EditPage.prototype.init = function() {
     })
 
     $("#saveStep4Edit").on('click', function(){
+        var nameStep4=$("#nameEdit").val()
+            if(nameStep4!=''){
+                layersGlobal[index]=nameStep4
+                self.app.forward('step5')
+            } else {
+                $('#errorName').show()
+            }
+        
         self.app.forward('step5')
     })
 
