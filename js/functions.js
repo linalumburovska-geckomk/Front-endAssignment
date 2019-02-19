@@ -178,12 +178,16 @@ Step4Page.prototype.init = function() {
     })
     $('#saveStep4').on('click', function(){
         var nameStep4=$("#nameStep4").val()
-        if(nameStep4!=''){
-            layersGlobal.push(nameStep4)
-            self.app.forward('step5')
+        if(valueExists(layersGlobal,nameStep4)===true) {
+            $('#errorValue').show()
         } else {
-            $('#errorName').show()
-        }
+            if(nameStep4!=''){
+                layersGlobal.push(nameStep4)
+                self.app.forward('step5')
+            } else {
+                $('#errorName').show()
+            }
+        } 
     })
 
 }
@@ -276,14 +280,16 @@ Step4EditPage.prototype.init = function() {
 
     $("#saveStep4Edit").on('click', function(){
         var nameStep4=$("#nameEdit").val()
-            if(nameStep4!=''){
+        if(nameStep4!=''){
+            if(valueExists(layersGlobal,nameStep4)===true) {
+                $('#errorValue').show()
+            } else {
                 layersGlobal[index]=nameStep4
                 self.app.forward('step5')
-            } else {
-                $('#errorName').show()
-            }
-        
-        self.app.forward('step5')
+            }                
+        } else {
+            $('#errorName').show()
+        }  
     })
 
 }
@@ -304,3 +310,12 @@ $('window').ready(function() {
     app.addPage('step5', new Step5Page(app))
     app.forward('step1')
 })
+
+function valueExists(layers, name) {
+    for(var i=0; i<layers.length;i++){
+        if(layers[i]===name) {
+            return true;
+        }
+    }
+    return false;
+}
