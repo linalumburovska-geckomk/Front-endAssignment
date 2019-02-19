@@ -17,18 +17,26 @@ body {
 }
 
 .formStep {
-    width: 30%;
+    width: 33%;
     margin: auto;
     display: block;
     margin-top: 100px;
+}
+
+.desc {
+    word-wrap: break-word;
 }
 
 .backSave {
     margin-top: 80px;
 }
 
+.back {
+    margin-right: 350px;
+}
+
 .save {
-    float: right;
+    position: fixed;
 }
 
 .error {
