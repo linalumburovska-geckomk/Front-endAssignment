@@ -98,14 +98,9 @@ Step2Page.prototype.init = function() {
     $('#save').on('click', function() {
         if(($('#name').val()!='') &&  ($('#description').val()!='') &&  ($('#imageURL').val()!='')){
             self.app.forward('step3')
-        } else if($('#name').val() ==""){
+        } else {
             $('#errorName').show()
-        } else if($('#description').val()=="") {
-            $('#errorName').hide()
             $('#errorDescription').show()
-        } else if($('#imageURL').val()==""){
-            $('#errorName').hide()
-            $('#errorDescription').hide()
             $('#errorImage').show()
         }
     })
