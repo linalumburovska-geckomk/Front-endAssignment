@@ -171,17 +171,23 @@ Step4Page.prototype.init = function() {
     $('#backStep4').on('click', function(){
         self.app.forward('step3')
     })
+
     $('#saveStep4').on('click', function(){
         var nameStep4=$("#nameStep4").val()
         if(valueExists(layersGlobal,nameStep4)===true) {
             $('#errorValue').show()
         } else {
-            if(nameStep4!=''){
-                layersGlobal.push(nameStep4)
-                self.app.forward('step5')
-            } else {
-                $('#errorName').show()
-            }
+            $('#modalSaveLayer').modal('show');
+        }
+        if(nameStep4!=''){
+            layersGlobal.push(nameStep4)
+            setTimeout(
+                function() {
+                    $('#modalSaveLayer').modal('hide');
+                    self.app.forward('step5')
+                }, 1500);
+        } else {
+            $('#errorName').show()
         } 
     })
 

@@ -7,8 +7,21 @@
             <div class="alert alert-danger error" role="alert" id="errorValue">Name already exists</div>
         </div>    
     </div>
+    <div class="container">
+        <div class="modal" id="modalSaveLayer" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>
+                            <div class="alert alert-success" role="alert" id="successLayer">Successfully saved layer</div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="backSave">
         <button type="button" class="btn btn-secondary buttons back" id="backStep4">Back</button>
-        <button type="button" class="btn btn-secondary buttons save" id="saveStep4">Save</button>
+        <button type="button" class="btn btn-secondary buttons save" data-toggle="modal" id="saveStep4">Save</button>
     </div>
 </form>
