@@ -96,8 +96,35 @@ Step2Page.prototype.init = function() {
         self.app.forward('step1')
     })
     $('#save').on('click', function() {
-        if(($('#name').val()!='') &&  ($('#description').val()!='') &&  ($('#imageURL').val()!='')){
+        var name = $('#name').val()
+        var desc= $('#description').val()
+        var image = $('#imageURL').val()
+        if(name!='' &&  desc!='' &&  image!=''){
             self.app.forward('step3')
+        } else if(name!='' &&  desc=='' &&  image=='') {
+            $('#errorName').hide()
+            $('#errorDescription').show()
+            $('#errorImage').show()
+        } else if(name=='' &&  desc!='' &&  image=='') {
+            $('#errorName').show()
+            $('#errorDescription').hide()
+            $('#errorImage').show()
+        } else if(name=='' &&  desc=='' &&  image!='') {
+            $('#errorName').show()
+            $('#errorDescription').show()
+            $('#errorImage').hide()
+        } else if(name!='' &&  desc!='' &&  image=='') {
+            $('#errorName').hide()
+            $('#errorDescription').hide()
+            $('#errorImage').show()
+        } else if(name!='' &&  desc=='' &&  image!='') {
+            $('#errorName').hide()
+            $('#errorDescription').show()
+            $('#errorImage').hide()
+        } else if(name=='' &&  desc!='' &&  image!='') {
+            $('#errorName').show()
+            $('#errorDescription').hide()
+            $('#errorImage').hide()
         } else {
             $('#errorName').show()
             $('#errorDescription').show()
