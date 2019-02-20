@@ -202,22 +202,23 @@ Step4Page.prototype.init = function() {
     $('#saveStep4').on('click', function(){
         var nameStep4=$("#nameStep4").val()
         var isValueExisted=valueExists(layersGlobal,nameStep4)
-        if(isValueExisted===true) {
-            $('#errorValue').show()
-        } else {
-            $('#modalSaveLayer').modal('show');
-        }
-        if(nameStep4!='' && isValueExisted===false){
-            layersGlobal.push(nameStep4)
-            setTimeout(
-                function() {
-                    $('#modalSaveLayer').modal('hide');
-                    self.app.forward('step5')
-                }, 1500);
-        } else if(nameStep4==''){
+        if(nameStep4=='') {
             $('#errorValue').hide()
             $('#errorName').show()
-        } 
+        } else {
+            if(isValueExisted===true) {
+                $('#errorValue').show()
+            } else {
+                $('#modalSaveLayer').modal('show');
+                layersGlobal.push(nameStep4)
+                setTimeout(
+                    function() {
+                        $('#modalSaveLayer').modal('hide');
+                        self.app.forward('step5')
+                    }, 1500);
+            }
+        }
+        
     })
 }
 
@@ -310,22 +311,22 @@ Step4EditPage.prototype.init = function() {
     $("#saveStep4Edit").on('click', function(){
         var nameStep4=$("#nameEdit").val()
         var isValueExisted=valueExists(layersGlobal,nameStep4)
-        if(isValueExisted===true) {
-            $('#errorValue').show()
-        } else if(nameStep4!=''){
-            $('#modalEditLayer').modal('show');
-        }
-        if(nameStep4!='' && isValueExisted===false){
-            layersGlobal[index]=nameStep4
-            setTimeout(
-                function() {
-                    $('#modalEditLayer').modal('hide');
-                    self.app.forward('step5')
-                }, 1500);
-        } else if(nameStep4=='') {
+        if(nameStep4=='') {
             $('#errorValue').hide()
             $('#errorName').show()
-        } 
+        } else {
+            if(isValueExisted===true) {
+                $('#errorValue').show()
+            } else if(nameStep4!=''){
+                $('#modalEditLayer').modal('show');
+                layersGlobal[index]=nameStep4
+                setTimeout(
+                    function() {
+                        $('#modalEditLayer').modal('hide');
+                        self.app.forward('step5')
+                    }, 1500);
+                }
+        }
     })
 
 }

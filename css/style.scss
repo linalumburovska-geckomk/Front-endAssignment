@@ -1,0 +1,87 @@
+$font-stack: Arial, Helvetica, sans-serif;
+
+html {
+    overflow-y: scroll;
+}
+
+body {
+    font-family: $font-stack;
+}
+
+.buttons {
+    font-size: 20px;
+    border-radius: 15px;
+    padding: 25px 50px;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.button1 {
+    margin: 50px;
+}
+
+.formStep {
+    width: 33%;
+    margin: 0 auto;
+    margin-top: 100px;
+
+    @media (max-width: 600px) {
+        width: 80%;
+    }
+    
+    @media screen and (max-width: 1200px) and (min-width: 600px) {
+        width: 73%;
+    } 
+}
+
+.backSave {
+    margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+}
+
+.error {
+    display: none;
+}
+
+%step3feedAndLayer {
+    margin-left: 50px;
+    margin-top: 50px;
+}
+
+.layerButton {
+    @extend %step3feedAndLayer;
+}
+
+.feed {
+    @extend %step3feedAndLayer;
+    font-size: 30px;
+
+    div {
+        display: inline-block;
+    }
+}
+
+.table {
+    width: 70%;
+    display: block;
+    margin-left: 50px;
+    margin-right: auto;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 24px;
+
+    thead tr {
+        padding: 30px;
+    }
+}
+
+.editButton {
+    font-size: 16px;
+    border-radius: 15px;
+    padding: 8px 20px;
+}
