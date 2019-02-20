@@ -174,23 +174,24 @@ Step4Page.prototype.init = function() {
 
     $('#saveStep4').on('click', function(){
         var nameStep4=$("#nameStep4").val()
-        if(valueExists(layersGlobal,nameStep4)===true) {
+        var isValueExisted=valueExists(layersGlobal,nameStep4)
+        if(isValueExisted===true) {
             $('#errorValue').show()
         } else {
             $('#modalSaveLayer').modal('show');
         }
-        if(nameStep4!=''){
+        if(nameStep4!='' && isValueExisted===false){
             layersGlobal.push(nameStep4)
             setTimeout(
                 function() {
                     $('#modalSaveLayer').modal('hide');
                     self.app.forward('step5')
                 }, 1500);
-        } else {
+        } else if(nameStep4==''){
+            $('#errorValue').hide()
             $('#errorName').show()
         } 
     })
-
 }
 
 Step4Page.prototype.dispose = function() {
@@ -281,16 +282,23 @@ Step4EditPage.prototype.init = function() {
 
     $("#saveStep4Edit").on('click', function(){
         var nameStep4=$("#nameEdit").val()
-        if(nameStep4!=''){
-            if(valueExists(layersGlobal,nameStep4)===true) {
-                $('#errorValue').show()
-            } else {
-                layersGlobal[index]=nameStep4
-                self.app.forward('step5')
-            }                
-        } else {
+        var isValueExisted=valueExists(layersGlobal,nameStep4)
+        if(isValueExisted===true) {
+            $('#errorValue').show()
+        } else if(nameStep4!=''){
+            $('#modalEditLayer').modal('show');
+        }
+        if(nameStep4!='' && isValueExisted===false){
+            layersGlobal[index]=nameStep4
+            setTimeout(
+                function() {
+                    $('#modalEditLayer').modal('hide');
+                    self.app.forward('step5')
+                }, 1500);
+        } else if(nameStep4=='') {
+            $('#errorValue').hide()
             $('#errorName').show()
-        }  
+        } 
     })
 
 }
