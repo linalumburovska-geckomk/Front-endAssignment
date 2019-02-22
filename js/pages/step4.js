@@ -35,24 +35,32 @@
             $('#saveStep4').on('click', function(){
                 var nameStep4=$("#nameStep4").val()
                 var isValueExisted=valueExists(layersGlobal,nameStep4)
-                if(nameStep4=='') {
+
+                if($.sanitize(nameStep4)==-1) {
                     $('#errorValue').hide()
-                    $('#errorName').show()
+                    $('#errorName').hide()
+                    $('#sanitizeName').show()
                 } else {
-                    if(isValueExisted===true) {
-                        $('#errorName').hide()
-                        $('#errorValue').show()
+                    if(nameStep4=='') {
+                        $('#sanitizeName').hide()
+                        $('#errorValue').hide()
+                        $('#errorName').show()
                     } else {
-                        $('#modalSaveLayer').modal('show');
-                        layersGlobal.push(nameStep4)
-                        setTimeout(
-                            function() {
-                                $('#modalSaveLayer').modal('hide')
-                                self.app.forward('step5')
-                            }, 1500);
+                        if(isValueExisted===true) {
+                            $('#sanitizeName').hide()
+                            $('#errorName').hide()
+                            $('#errorValue').show()
+                        } else {
+                            $('#modalSaveLayer').modal('show');
+                            layersGlobal.push(nameStep4)
+                            setTimeout(
+                                function() {
+                                    $('#modalSaveLayer').modal('hide')
+                                    self.app.forward('step5')
+                                }, 1500);
+                        }
                     }
                 }
-                
             })
         }
         
@@ -68,6 +76,18 @@
             }
             return false;
         }
+
+        $.sanitize = function(input) {
+            var output = input.replace(/<script[^>]*?>.*?<\/script>/gi, '').
+                         replace(/<[\/\!]*?[^<>]*?>/gi, '').
+                         replace(/<style[^>]*?>.*?<\/style>/gi, '').
+                         replace(/<![\s\S]*?--[ \t\n\r]*>/gi, '');
+            if(input==output){
+                return output;
+            } else {
+                return -1;
+            }
+        };
         
         return Step4Page;
     

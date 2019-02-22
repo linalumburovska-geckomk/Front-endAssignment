@@ -35,23 +35,33 @@
             $("#saveStep4Edit").on('click', function(){
                 var nameStep4=$("#nameEdit").val()
                 var isValueExisted=valueExists(layersGlobal,nameStep4)
-                if(nameStep4=='') {
+
+                if($.sanitize(nameStep4)==-1) {
                     $('#errorValue').hide()
-                    $('#errorName').show()
+                    $('#errorName').hide()
+                    $('#sanitizeName').show()
                 } else {
-                    if(isValueExisted===true) {
-                        $('#errorName').hide()
-                        $('#errorValue').show()
-                    } else if(nameStep4!=''){
-                        $('#modalEditLayer').modal('show');
-                        layersGlobal[index]=nameStep4
-                        setTimeout(
-                            function() {
-                                $('#modalEditLayer').modal('hide');
-                                self.app.forward('step5')
-                            }, 1500);
-                        }
+                    if(nameStep4=='') {
+                        $('#sanitizeName').hide()
+                        $('#errorValue').hide()
+                        $('#errorName').show()
+                    } else {
+                        if(isValueExisted===true) {
+                            $('#sanitizeName').hide()
+                            $('#errorName').hide()
+                            $('#errorValue').show()
+                        } else if(nameStep4!=''){
+                            $('#modalEditLayer').modal('show');
+                            layersGlobal[index]=nameStep4
+                            setTimeout(
+                                function() {
+                                    $('#modalEditLayer').modal('hide');
+                                    self.app.forward('step5')
+                                }, 1500);
+                            }
+                    }
                 }
+
             })
 
         }
@@ -67,6 +77,18 @@
             }
             return false;
         }
+
+        $.sanitize = function(input) {
+            var output = input.replace(/<script[^>]*?>.*?<\/script>/gi, '').
+                         replace(/<[\/\!]*?[^<>]*?>/gi, '').
+                         replace(/<style[^>]*?>.*?<\/style>/gi, '').
+                         replace(/<![\s\S]*?--[ \t\n\r]*>/gi, '');
+            if(input==output){
+                return output;
+            } else {
+                return -1;
+            }
+        };
 
         return Step4EditPage;
 
