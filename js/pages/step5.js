@@ -5,9 +5,9 @@
         var $=require('jquery')
         require('bootstrap')
     
-        layersGlobal=JSON.parse(localStorage.getItem('layersGlobal'))
-        clicked=localStorage.getItem('clicked')
-        index=localStorage.getItem('index')
+        layersGlobal=JSON.parse(sessionStorage.getItem('layersGlobal'))
+        clicked=sessionStorage.getItem('clicked')
+        index=sessionStorage.getItem('index')
     
         var Step5Page = function(app) {
             this.app = app
@@ -29,7 +29,7 @@
         }
         
         Step5Page.prototype.init = function() {
-            $('#nameFeed').append(this.app.data['name'])
+            $('#nameFeed').append(sessionStorage.getItem("name"))
             var self=this
             $("#createLayer").on('click', function(){
                 self.app.forward('step4')
@@ -46,12 +46,14 @@
             for(var i=0; i<layersGlobal.length;i++) {
                 $("#"+i+"").click(function(){
                     index= $(this).attr('id')
+                    // index=sessionStorage.setItem('index',index)
                     var add=layersGlobal[index]
-                    clicked=add            
+                    clicked=add   
+                    // clicked=sessionStorage.setItem('clicked',clicked)        
+                    // console.log(clicked)
                     self.app.forward('step4Edit')
                 })
             }
-        
         }
         
         

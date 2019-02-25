@@ -25,7 +25,7 @@
         }
         
         Step3Page.prototype.init = function() {
-            $('#nameFeed').append(this.app.data['name'])
+            $('#nameFeed').append(sessionStorage.getItem('name',name))
             var self=this
             $("#createLayer").on('click', function(){
                 self.app.forward('step4')

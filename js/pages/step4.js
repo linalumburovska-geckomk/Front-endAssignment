@@ -2,7 +2,7 @@
 
     define(function(require){
 
-        layersGlobal=JSON.parse(localStorage.getItem('layersGlobal'))
+        layersGlobal=JSON.parse(sessionStorage.getItem('layersGlobal'))
     
         var $=require('jquery')
         require('bootstrap')

@@ -1,5 +1,4 @@
 (function(){
-    
     requirejs.config({
         baseUrl: 'js',
         paths: {
@@ -24,7 +23,19 @@
         app.addPage('step4', new Step4Page(app))
         app.addPage('step5', new Step5Page(app))
         app.addPage('step4Edit', new Step4EditPage(app))
-        app.forward('step1')    
+     
+        var tmpLocation = window.location.href 
+
+        if(tmpLocation.indexOf('step')===-1){
+            app.forward('step1')
+        } else {
+            var lastFive = tmpLocation.substr(tmpLocation.length - 5)
+            if(lastFive[0]==4){
+                app.forward('step4Edit')
+            } else {
+                app.forward(lastFive)
+            } 
+        }        
     });
 })();
 

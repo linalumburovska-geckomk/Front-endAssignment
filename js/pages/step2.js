@@ -40,6 +40,9 @@
 
                 // Secure input, checks if all input fields are valid
                 if($.sanitize(name)==-1) {
+                    $('#errorName').hide()
+                    $('#errorDescription').hide()
+                    $('#errorImage').hide()
                     $('#sanitizeName').show()    
                     $('#sanitizeDescription').hide()
                     $('#sanitizeImage').hide()               
@@ -58,6 +61,7 @@
                     image=$.sanitize(image)
 
                     if(name!='' &&  desc!='' &&  image!=''){
+                        sessionStorage.setItem('name', name)
                         self.app.forward('step3')
                     } else if(name!='' &&  desc=='' &&  image=='') {
                         $('#sanitizeName').hide()

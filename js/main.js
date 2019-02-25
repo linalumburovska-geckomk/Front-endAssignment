@@ -5,12 +5,12 @@
         var clicked ='';
         var layersGlobal=[];
         var index=-1;
-    
-        localStorage.setItem("clicked",clicked)
-        localStorage.setItem("layersGlobal", JSON.stringify(layersGlobal))
-        localStorage.setItem("index",index)    
-    
-    
+          
+        sessionStorage.setItem("clicked",clicked)
+        sessionStorage.setItem("layersGlobal", JSON.stringify(layersGlobal))
+        sessionStorage.setItem("index",index)   
+        
+           
         var $=require('jquery')
         
     
@@ -39,6 +39,26 @@
                     console.error(e)
                 })
                 // Implement the history api from the browser
+                window.history.pushState(url, null, url);
+                window.addEventListener("popstate", function(e){  
+                    var character = e.state
+                    if (character == null) {
+                        self.currentPage = self.pageMap['step1']
+                        self.currentPage.load().then(function() {
+                            self.currentPage.init()
+                        }).catch(function(e) {
+                            console.error(e)
+                        })
+                    } else {
+                        self.currentPage = self.pageMap[character]
+                        self.currentPage.load().then(function() {
+                            self.currentPage.init()
+                        }).catch(function(e) {
+                            console.error(e)
+                        })    
+                    }
+                    
+                })
             }
         }
     
