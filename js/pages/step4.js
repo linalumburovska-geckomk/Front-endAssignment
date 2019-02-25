@@ -7,6 +7,8 @@
         var $=require('jquery')
         require('bootstrap')
         
+        $.getScript( "js/plugins.js")
+
         var Step4Page = function(app) {
             this.app = app
         }
@@ -36,22 +38,19 @@
                 var nameStep4=$("#nameStep4").val()
                 var isValueExisted=valueExists(layersGlobal,nameStep4)
 
-                if($.sanitize(nameStep4)==-1) {
-                    $('#errorValue').hide()
-                    $('#errorName').hide()
+                if($("#nameStep4").sanitize()==-1) {
+                    $('#errorValue, #errorName').hide()
                     $('#sanitizeName').show()
                 } else {
                     if(nameStep4=='') {
-                        $('#sanitizeName').hide()
-                        $('#errorValue').hide()
+                        $('#sanitizeName, #errorValue').hide()
                         $('#errorName').show()
                     } else {
                         if(isValueExisted===true) {
-                            $('#sanitizeName').hide()
-                            $('#errorName').hide()
+                            $('#sanitizeName, #errorName').hide()
                             $('#errorValue').show()
                         } else {
-                            $('#modalSaveLayer').modal('show');
+                            $('#modalSaveLayer').modal('show')
                             layersGlobal.push(nameStep4)
                             setTimeout(
                                 function() {
@@ -77,17 +76,6 @@
             return false;
         }
 
-        $.sanitize = function(input) {
-            var output = input.replace(/<script[^>]*?>.*?<\/script>/gi, '').
-                         replace(/<[\/\!]*?[^<>]*?>/gi, '').
-                         replace(/<style[^>]*?>.*?<\/style>/gi, '').
-                         replace(/<![\s\S]*?--[ \t\n\r]*>/gi, '');
-            if(input==output){
-                return output;
-            } else {
-                return -1;
-            }
-        };
         
         return Step4Page;
     

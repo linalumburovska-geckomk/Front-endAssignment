@@ -46,11 +46,8 @@
             for(var i=0; i<layersGlobal.length;i++) {
                 $("#"+i+"").click(function(){
                     index= $(this).attr('id')
-                    // index=sessionStorage.setItem('index',index)
                     var add=layersGlobal[index]
                     clicked=add   
-                    // clicked=sessionStorage.setItem('clicked',clicked)        
-                    // console.log(clicked)
                     self.app.forward('step4Edit')
                 })
             }

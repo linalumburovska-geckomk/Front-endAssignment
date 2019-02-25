@@ -5,6 +5,8 @@
         var $ = require('jquery')
         require('bootstrap')
 
+        $.getScript( "js/plugins.js")
+
         var Step4EditPage = function(app) {
             this.app = app
         }
@@ -36,26 +38,23 @@
                 var nameStep4=$("#nameEdit").val()
                 var isValueExisted=valueExists(layersGlobal,nameStep4)
 
-                if($.sanitize(nameStep4)==-1) {
-                    $('#errorValue').hide()
-                    $('#errorName').hide()
+                if($("#nameEdit").sanitize()==-1) {
+                    $('#errorValue, #errorName').hide()
                     $('#sanitizeName').show()
                 } else {
                     if(nameStep4=='') {
-                        $('#sanitizeName').hide()
-                        $('#errorValue').hide()
+                        $('#sanitizeName, #errorValue').hide()
                         $('#errorName').show()
                     } else {
                         if(isValueExisted===true) {
-                            $('#sanitizeName').hide()
-                            $('#errorName').hide()
+                            $('#sanitizeName, #errorName').hide()
                             $('#errorValue').show()
                         } else if(nameStep4!=''){
-                            $('#modalEditLayer').modal('show');
+                            $('#modalEditLayer').modal('show')
                             layersGlobal[index]=nameStep4
                             setTimeout(
                                 function() {
-                                    $('#modalEditLayer').modal('hide');
+                                    $('#modalEditLayer').modal('hide')
                                     self.app.forward('step5')
                                 }, 1500);
                             }
@@ -78,18 +77,7 @@
             return false;
         }
 
-        $.sanitize = function(input) {
-            var output = input.replace(/<script[^>]*?>.*?<\/script>/gi, '').
-                         replace(/<[\/\!]*?[^<>]*?>/gi, '').
-                         replace(/<style[^>]*?>.*?<\/style>/gi, '').
-                         replace(/<![\s\S]*?--[ \t\n\r]*>/gi, '');
-            if(input==output){
-                return output;
-            } else {
-                return -1;
-            }
-        };
-
+       
         return Step4EditPage;
 
     });

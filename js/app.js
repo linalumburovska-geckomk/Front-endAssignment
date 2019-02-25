@@ -10,7 +10,8 @@
             "step3": "./pages/step3",
             "step4": "./pages/step4",
             "step5": "./pages/step5",
-            "step4Edit": "./pages/step4Edit"
+            "step4Edit": "./pages/step4Edit",
+            "plugins": "./plugins"
         }
         
     });
