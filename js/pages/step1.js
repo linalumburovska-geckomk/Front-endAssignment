@@ -3,8 +3,7 @@
     define (function(require){
 
         var $ = require('jquery');
-       
-    
+            
         var Step1Page = function(app) {
             this.app = app
         }
