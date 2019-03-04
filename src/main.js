@@ -20,9 +20,6 @@ App.prototype.addPage = function(url, page) {
 
 App.prototype.forward = function(url) {
     if (typeof this.pageMap[url] !== 'undefined') {
-        if (this.currentPage !== null) {
-            this.currentPage.dispose()
-        }
         this.currentPage = this.pageMap[url]
         var self = this
         this.currentPage.load().then(function() {
@@ -57,8 +54,7 @@ App.prototype.forward = function(url) {
 App.prototype.isPageValid = function(page) {
     var loadState = typeof page['load'] === 'function'
     var initState = typeof page['init'] === 'function'
-    var disposeState = typeof page['dispose'] === 'function'
-    return loadState && initState && disposeState
+    return loadState && initState
 }
 
 module.exports = App

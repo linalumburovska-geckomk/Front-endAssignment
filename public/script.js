@@ -10371,17 +10371,17 @@ window['jQuery'] = require('jquery');
 
 var App = require('./main');
 
-var Step1Page = require('./pages/step1');
+var Step1Page = require('./pages/Step1Page');
 
-var Step2Page = require('./pages/step2');
+var Step2Page = require('./pages/Step2Page');
 
-var Step3Page = require('./pages/step3');
+var Step3Page = require('./pages/Step3Page');
 
-var Step4Page = require('./pages/step4');
+var Step4Page = require('./pages/Step4Page');
 
-var Step5Page = require('./pages/step5');
+var Step5Page = require('./pages/Step5Page');
 
-var Step4EditPage = require('./pages/step4Edit');
+var Step4EditPage = require('./pages/Step4EditPage');
 
 var app = new App();
 app.addPage('step1', new Step1Page(app));
@@ -10404,7 +10404,7 @@ if (tmpLocation.indexOf('step') === -1) {
   }
 }
 
-},{"./main":3,"./pages/step1":4,"./pages/step2":5,"./pages/step3":6,"./pages/step4":7,"./pages/step4Edit":8,"./pages/step5":9,"jquery":1}],3:[function(require,module,exports){
+},{"./main":3,"./pages/Step1Page":4,"./pages/Step2Page":5,"./pages/Step3Page":6,"./pages/Step4EditPage":7,"./pages/Step4Page":8,"./pages/Step5Page":9,"jquery":1}],3:[function(require,module,exports){
 "use strict";
 
 var clicked = '';
@@ -10429,10 +10429,6 @@ App.prototype.addPage = function (url, page) {
 
 App.prototype.forward = function (url) {
   if (typeof this.pageMap[url] !== 'undefined') {
-    if (this.currentPage !== null) {
-      this.currentPage.dispose();
-    }
-
     this.currentPage = this.pageMap[url];
     var self = this;
     this.currentPage.load().then(function () {
@@ -10467,8 +10463,7 @@ App.prototype.forward = function (url) {
 App.prototype.isPageValid = function (page) {
   var loadState = typeof page['load'] === 'function';
   var initState = typeof page['init'] === 'function';
-  var disposeState = typeof page['dispose'] === 'function';
-  return loadState && initState && disposeState;
+  return loadState && initState;
 };
 
 module.exports = App;
@@ -10476,41 +10471,63 @@ module.exports = App;
 },{}],4:[function(require,module,exports){
 "use strict";
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 var $ = require('jquery');
 
-var Step1Page = function Step1Page(app) {
-  this.app = app;
-};
+var Step1Page =
+/*#__PURE__*/
+function () {
+  function Step1Page(app) {
+    _classCallCheck(this, Step1Page);
 
-Step1Page.prototype.load = function () {
-  return new Promise(function (resolve) {
-    $.ajax({
-      async: true,
-      url: "step1.html",
-      type: 'GET',
-      success: function success(data) {
-        $('#root').empty();
-        $('#root').append(data);
-        resolve();
-      }
-    });
-  });
-};
+    this.app = app;
+  }
 
-Step1Page.prototype.init = function () {
-  var self = this;
-  $('#button1').on('click', function (e) {
-    e.preventDefault();
-    self.app.forward('step2');
-  });
-};
+  _createClass(Step1Page, [{
+    key: "load",
+    value: function load() {
+      return new Promise(function (resolve) {
+        $.ajax({
+          async: true,
+          url: "step1.html",
+          type: 'GET',
+          success: function success(data) {
+            $('#root').empty();
+            $('#root').append(data);
+            resolve();
+          }
+        });
+      });
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      var self = this;
+      $('#button1').on('click', function (e) {
+        e.preventDefault();
+        self.app.forward('step2');
+      });
+    }
+  }]);
 
-Step1Page.prototype.dispose = function () {};
+  return Step1Page;
+}();
 
 module.exports = Step1Page;
 
 },{"jquery":1}],5:[function(require,module,exports){
 "use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var $ = require('jquery');
 
@@ -10519,184 +10536,323 @@ var desc = "";
 var image = "";
 $.getScript("/plugins.js");
 
-var Step2Page = function Step2Page(app) {
-  this.app = app;
-};
+var Step2Page =
+/*#__PURE__*/
+function () {
+  function Step2Page(app) {
+    _classCallCheck(this, Step2Page);
 
-Step2Page.prototype.load = function () {
-  return new Promise(function (resolve) {
-    $.ajax({
-      async: true,
-      url: "step2.html",
-      type: 'GET',
-      success: function success(data) {
-        $('#root').empty();
-        $('#root').append(data);
-        resolve();
-      }
-    });
-  });
-};
+    this.app = app;
+  }
 
-Step2Page.prototype.init = function () {
-  var self = this;
-  $('#back').on('click', function () {
-    self.app.forward('step1');
-  });
-  $('#save').on('click', function () {
-    name = $('#name').val();
-    desc = $('#description').val();
-    image = $('#imageURL').val(); // Secure input, checks if all input fields are valid
-
-    if ($('#name').sanitize() == -1) {
-      $('#errorName, #errorDescription, #errorImage, #sanitizeDescription, #sanitizeImage').hide();
-      $('#sanitizeName').show();
-    } else if ($('#description').sanitize() == -1) {
-      $('#errorName, #errorDescription, #errorImage, #sanitizeName, #sanitizeImage').hide();
-      $('#sanitizeDescription').show();
-    } else if ($('#imageURL').sanitize() == -1) {
-      $('#errorName, #errorDescription, #errorImage, #sanitizeName, #sanitizeDescription ').hide();
-      $('#sanitizeImage').show();
-    } else {
-      //If they are secure, checks if every field that is requred is not empty
-      name = $('#name').sanitize();
-      desc = $('#description').sanitize();
-      image = $('#imageURL').sanitize();
-
-      if (name != '' && desc != '' && image != '') {
-        sessionStorage.setItem('name', name.toUpperCase());
-        self.app.forward('step3');
-      } else if (name != '' && desc == '' && image == '') {
-        $('#sanitizeName, #sanitizeDescription, #sanitizeImage, #errorName, #errorImage').hide();
-        $('#errorDescription, #errorImage').show();
-      } else if (name == '' && desc != '' && image == '') {
-        $('#sanitizeName, #sanitizeDescription, #sanitizeImage, #errorDescription').hide();
-        $('#errorName, #errorImage').show();
-      } else if (name == '' && desc == '' && image != '') {
-        $('#sanitizeName, #sanitizeDescription, #sanitizeImage, #errorImage').hide();
-        $('#errorName, #errorDescription').show();
-      } else if (name != '' && desc != '' && image == '') {
-        $('#sanitizeName, #sanitizeDescription, #sanitizeImage, #errorName, #errorDescription').hide();
-        $('#errorImage').show();
-      } else if (name != '' && desc == '' && image != '') {
-        $('#sanitizeName, #sanitizeDescription, #sanitizeImage, #errorName, #errorImage').hide();
-        $('#errorDescription').show();
-      } else if (name == '' && desc != '' && image != '') {
-        $('#sanitizeName, #sanitizeDescription, #sanitizeImage, #errorDescription, #errorImage').hide();
-        $('#errorName').show();
-      } else {
-        $('#sanitizeName, #sanitizeDescription, #sanitizeImage').hide();
-        $('#errorName, #errorDescription, #errorImage').show();
-      }
+  _createClass(Step2Page, [{
+    key: "load",
+    value: function load() {
+      return new Promise(function (resolve) {
+        $.ajax({
+          async: true,
+          url: "step2.html",
+          type: 'GET',
+          success: function success(data) {
+            $('#root').empty();
+            $('#root').append(data);
+            resolve();
+          }
+        });
+      });
     }
-  });
-};
+  }, {
+    key: "init",
+    value: function init() {
+      var self = this;
+      $('#back').on('click', function () {
+        self.app.forward('step1');
+      });
+      $('#save').on('click', function () {
+        name = $('#name').val();
+        desc = $('#description').val();
+        image = $('#imageURL').val(); // Secure input, checks if all input fields are valid
 
-Step2Page.prototype.dispose = function () {};
+        if ($('#name').sanitize() == -1) {
+          $('#errorName, #errorDescription, #errorImage, #sanitizeDescription, #sanitizeImage').hide();
+          $('#sanitizeName').show();
+        } else if ($('#description').sanitize() == -1) {
+          $('#errorName, #errorDescription, #errorImage, #sanitizeName, #sanitizeImage').hide();
+          $('#sanitizeDescription').show();
+        } else if ($('#imageURL').sanitize() == -1) {
+          $('#errorName, #errorDescription, #errorImage, #sanitizeName, #sanitizeDescription ').hide();
+          $('#sanitizeImage').show();
+        } else {
+          //If they are secure, checks if every field that is requred is not empty
+          name = $('#name').sanitize();
+          desc = $('#description').sanitize();
+          image = $('#imageURL').sanitize();
+
+          if (name != '' && desc != '' && image != '') {
+            sessionStorage.setItem('name', name.toUpperCase());
+            self.app.forward('step3');
+          } else if (name != '' && desc == '' && image == '') {
+            $('#sanitizeName, #sanitizeDescription, #sanitizeImage, #errorName, #errorImage').hide();
+            $('#errorDescription, #errorImage').show();
+          } else if (name == '' && desc != '' && image == '') {
+            $('#sanitizeName, #sanitizeDescription, #sanitizeImage, #errorDescription').hide();
+            $('#errorName, #errorImage').show();
+          } else if (name == '' && desc == '' && image != '') {
+            $('#sanitizeName, #sanitizeDescription, #sanitizeImage, #errorImage').hide();
+            $('#errorName, #errorDescription').show();
+          } else if (name != '' && desc != '' && image == '') {
+            $('#sanitizeName, #sanitizeDescription, #sanitizeImage, #errorName, #errorDescription').hide();
+            $('#errorImage').show();
+          } else if (name != '' && desc == '' && image != '') {
+            $('#sanitizeName, #sanitizeDescription, #sanitizeImage, #errorName, #errorImage').hide();
+            $('#errorDescription').show();
+          } else if (name == '' && desc != '' && image != '') {
+            $('#sanitizeName, #sanitizeDescription, #sanitizeImage, #errorDescription, #errorImage').hide();
+            $('#errorName').show();
+          } else {
+            $('#sanitizeName, #sanitizeDescription, #sanitizeImage').hide();
+            $('#errorName, #errorDescription, #errorImage').show();
+          }
+        }
+      });
+    }
+  }]);
+
+  return Step2Page;
+}();
 
 module.exports = Step2Page;
 
 },{"jquery":1}],6:[function(require,module,exports){
 "use strict";
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 var $ = require('jquery');
 
-var Step3Page = function Step3Page(app) {
-  this.app = app;
-};
+var Step3Page =
+/*#__PURE__*/
+function () {
+  function Step3Page(app) {
+    _classCallCheck(this, Step3Page);
 
-Step3Page.prototype.load = function () {
-  return new Promise(function (resolve) {
-    $.ajax({
-      async: true,
-      url: "step3.html",
-      type: 'GET',
-      success: function success(data) {
-        $('#root').empty();
-        $('#root').append(data);
-        resolve();
-      }
-    });
-  });
-};
+    this.app = app;
+  }
 
-Step3Page.prototype.init = function () {
-  $('#nameFeed').append(sessionStorage.getItem('name', name));
-  var self = this;
-  $("#createLayer").on('click', function () {
-    self.app.forward('step4');
-  });
-};
+  _createClass(Step3Page, [{
+    key: "load",
+    value: function load() {
+      return new Promise(function (resolve) {
+        $.ajax({
+          async: true,
+          url: "step3.html",
+          type: 'GET',
+          success: function success(data) {
+            $('#root').empty();
+            $('#root').append(data);
+            resolve();
+          }
+        });
+      });
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      $('#nameFeed').append(sessionStorage.getItem('name', name));
+      var self = this;
+      $("#createLayer").on('click', function () {
+        self.app.forward('step4');
+      });
+    }
+  }]);
 
-Step3Page.prototype.dispose = function () {};
+  return Step3Page;
+}();
 
 module.exports = Step3Page;
 
 },{"jquery":1}],7:[function(require,module,exports){
 "use strict";
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var $ = require('jquery');
+
+$.getScript("/plugins.js");
+var index;
+var layersGlobal;
+var clicked;
+
+var Step4EditPage =
+/*#__PURE__*/
+function () {
+  function Step4EditPage(app) {
+    _classCallCheck(this, Step4EditPage);
+
+    this.app = app;
+  }
+
+  _createClass(Step4EditPage, [{
+    key: "load",
+    value: function load() {
+      return new Promise(function (resolve) {
+        $.ajax({
+          async: true,
+          url: "step4Edit.html",
+          type: 'GET',
+          success: function success(data) {
+            $('#root').empty();
+            $('#root').append(data);
+            resolve();
+          }
+        });
+      });
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      index = sessionStorage.getItem('index');
+      layersGlobal = JSON.parse(sessionStorage.getItem('layersGlobal'));
+      clicked = sessionStorage.getItem('clicked');
+      $("#nameEdit").val(clicked);
+      var self = this;
+      $("#backStep4Edit").on('click', function () {
+        self.app.forward('step3');
+      });
+      $("#saveStep4Edit").on('click', function () {
+        var nameStep4 = $("#nameEdit").val();
+        var isValueExisted = valueExists(layersGlobal, nameStep4);
+
+        if ($("#nameEdit").sanitize() == -1) {
+          $('#errorValue, #errorName').hide();
+          $('#sanitizeName').show();
+        } else {
+          if (nameStep4 == '') {
+            $('#sanitizeName, #errorValue').hide();
+            $('#errorName').show();
+          } else {
+            if (isValueExisted === true) {
+              $('#sanitizeName, #errorName').hide();
+              $('#errorValue').show();
+            } else if (nameStep4 != '') {
+              $('#modalEditLayer').modal('show');
+              layersGlobal[index] = nameStep4;
+              sessionStorage.setItem("layersGlobal", JSON.stringify(layersGlobal));
+              setTimeout(function () {
+                $('#modalEditLayer').modal('hide');
+                self.app.forward('step5');
+              }, 1500);
+            }
+          }
+        }
+      });
+    }
+  }]);
+
+  return Step4EditPage;
+}();
+
+var valueExists = function valueExists(layers, name) {
+  for (var i = 0; i < layers.length; i++) {
+    if (layers[i] === name) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+module.exports = Step4EditPage;
+
+},{"jquery":1}],8:[function(require,module,exports){
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 var $ = require('jquery');
 
 $.getScript("/plugins.js");
 var layersGlobal = null;
 
-var Step4Page = function Step4Page(app) {
-  this.app = app;
-};
+var Step4Page =
+/*#__PURE__*/
+function () {
+  function Step4Page(app) {
+    _classCallCheck(this, Step4Page);
 
-Step4Page.prototype.load = function () {
-  return new Promise(function (resolve) {
-    $.ajax({
-      async: true,
-      url: "step4.html",
-      type: 'GET',
-      success: function success(data) {
-        $('#root').empty();
-        $('#root').append(data);
-        resolve();
-      }
-    });
-  });
-};
+    this.app = app;
+  }
 
-Step4Page.prototype.init = function () {
-  layersGlobal = JSON.parse(sessionStorage.getItem('layersGlobal'));
-  var self = this;
-  $('#backStep4').on('click', function () {
-    self.app.forward('step3');
-  });
-  $('#saveStep4').on('click', function () {
-    var nameStep4 = $("#nameStep4").val();
-    var isValueExisted = valueExists(layersGlobal, nameStep4);
-
-    if ($("#nameStep4").sanitize() == -1) {
-      $('#errorValue, #errorName').hide();
-      $('#sanitizeName').show();
-    } else {
-      if (nameStep4 == '') {
-        $('#sanitizeName, #errorValue').hide();
-        $('#errorName').show();
-      } else {
-        if (isValueExisted === true) {
-          $('#sanitizeName, #errorName').hide();
-          $('#errorValue').show();
-        } else {
-          $('#modalSaveLayer').modal('show');
-          layersGlobal.push(nameStep4);
-          sessionStorage.setItem("layersGlobal", JSON.stringify(layersGlobal));
-          setTimeout(function () {
-            $('#modalSaveLayer').modal('hide');
-            self.app.forward('step5');
-          }, 1500);
-        }
-      }
+  _createClass(Step4Page, [{
+    key: "load",
+    value: function load() {
+      return new Promise(function (resolve) {
+        $.ajax({
+          async: true,
+          url: "step4.html",
+          type: 'GET',
+          success: function success(data) {
+            $('#root').empty();
+            $('#root').append(data);
+            resolve();
+          }
+        });
+      });
     }
-  });
-};
+  }, {
+    key: "init",
+    value: function init() {
+      layersGlobal = JSON.parse(sessionStorage.getItem('layersGlobal'));
+      var self = this;
+      $('#backStep4').on('click', function () {
+        self.app.forward('step3');
+      });
+      $('#saveStep4').on('click', function () {
+        var nameStep4 = $("#nameStep4").val();
+        var isValueExisted = valueExists(layersGlobal, nameStep4);
 
-Step4Page.prototype.dispose = function () {};
+        if ($("#nameStep4").sanitize() == -1) {
+          $('#errorValue, #errorName').hide();
+          $('#sanitizeName').show();
+        } else {
+          if (nameStep4 == '') {
+            $('#sanitizeName, #errorValue').hide();
+            $('#errorName').show();
+          } else {
+            if (isValueExisted === true) {
+              $('#sanitizeName, #errorName').hide();
+              $('#errorValue').show();
+            } else {
+              $('#modalSaveLayer').modal('show');
+              layersGlobal.push(nameStep4);
+              sessionStorage.setItem("layersGlobal", JSON.stringify(layersGlobal));
+              setTimeout(function () {
+                $('#modalSaveLayer').modal('hide');
+                self.app.forward('step5');
+              }, 1500);
+            }
+          }
+        }
+      });
+    }
+  }]);
 
-function valueExists(layers, name) {
+  return Step4Page;
+}();
+
+var valueExists = function valueExists(layers, name) {
   for (var i = 0; i < layers.length; i++) {
     if (layers[i] === name) {
       return true;
@@ -10704,149 +10860,84 @@ function valueExists(layers, name) {
   }
 
   return false;
-}
+};
 
 module.exports = Step4Page;
-
-},{"jquery":1}],8:[function(require,module,exports){
-"use strict";
-
-var $ = require('jquery');
-
-$.getScript("/plugins.js");
-var index;
-var layersGlobal;
-var clicked;
-
-var Step4EditPage = function Step4EditPage(app) {
-  this.app = app;
-};
-
-Step4EditPage.prototype.load = function () {
-  return new Promise(function (resolve) {
-    $.ajax({
-      async: true,
-      url: "step4Edit.html",
-      type: 'GET',
-      success: function success(data) {
-        $('#root').empty();
-        $('#root').append(data);
-        resolve();
-      }
-    });
-  });
-};
-
-Step4EditPage.prototype.init = function () {
-  index = sessionStorage.getItem('index');
-  layersGlobal = JSON.parse(sessionStorage.getItem('layersGlobal'));
-  clicked = sessionStorage.getItem('clicked');
-  $("#nameEdit").val(clicked);
-  var self = this;
-  $("#backStep4Edit").on('click', function () {
-    self.app.forward('step3');
-  });
-  $("#saveStep4Edit").on('click', function () {
-    var nameStep4 = $("#nameEdit").val();
-    var isValueExisted = valueExists(layersGlobal, nameStep4);
-
-    if ($("#nameEdit").sanitize() == -1) {
-      $('#errorValue, #errorName').hide();
-      $('#sanitizeName').show();
-    } else {
-      if (nameStep4 == '') {
-        $('#sanitizeName, #errorValue').hide();
-        $('#errorName').show();
-      } else {
-        if (isValueExisted === true) {
-          $('#sanitizeName, #errorName').hide();
-          $('#errorValue').show();
-        } else if (nameStep4 != '') {
-          $('#modalEditLayer').modal('show');
-          layersGlobal[index] = nameStep4;
-          sessionStorage.setItem("layersGlobal", JSON.stringify(layersGlobal));
-          setTimeout(function () {
-            $('#modalEditLayer').modal('hide');
-            self.app.forward('step5');
-          }, 1500);
-        }
-      }
-    }
-  });
-};
-
-Step4EditPage.prototype.dispose = function () {};
-
-function valueExists(layers, name) {
-  for (var i = 0; i < layers.length; i++) {
-    if (layers[i] === name) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-module.exports = Step4EditPage;
 
 },{"jquery":1}],9:[function(require,module,exports){
 "use strict";
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 var $ = require('jquery');
 
 var layersGlobal;
 var clicked;
 var index;
 
-var Step5Page = function Step5Page(app) {
-  this.app = app;
-};
+var Step5Page =
+/*#__PURE__*/
+function () {
+  function Step5Page(app) {
+    _classCallCheck(this, Step5Page);
 
-Step5Page.prototype.load = function () {
-  return new Promise(function (resolve) {
-    $.ajax({
-      async: true,
-      url: "step5.html",
-      type: 'GET',
-      success: function success(data) {
-        $('#root').empty();
-        $('#root').append(data);
-        resolve();
+    this.app = app;
+  }
+
+  _createClass(Step5Page, [{
+    key: "load",
+    value: function load() {
+      return new Promise(function (resolve) {
+        $.ajax({
+          async: true,
+          url: "step5.html",
+          type: 'GET',
+          success: function success(data) {
+            $('#root').empty();
+            $('#root').append(data);
+            resolve();
+          }
+        });
+      });
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      index = sessionStorage.getItem('index');
+      clicked = sessionStorage.getItem('clicked');
+      layersGlobal = JSON.parse(sessionStorage.getItem('layersGlobal'));
+      $('#nameFeed').append(sessionStorage.getItem("name"));
+      var self = this;
+      $("#createLayer").on('click', function () {
+        self.app.forward('step4');
+      });
+
+      for (var i = 0; i < layersGlobal.length; i++) {
+        var layer = layersGlobal[i];
+        var buttonEdit = "<button class='btn btn-secondary editButton' id='" + i + "' >Edit</button>";
+        var appendRow = "<tr><td>" + layer + "</td><td>" + buttonEdit + "</td></tr>";
+        $('#tableLayers tbody').append(appendRow);
       }
-    });
-  });
-};
 
-Step5Page.prototype.init = function () {
-  index = sessionStorage.getItem('index');
-  clicked = sessionStorage.getItem('clicked');
-  layersGlobal = JSON.parse(sessionStorage.getItem('layersGlobal'));
-  $('#nameFeed').append(sessionStorage.getItem("name"));
-  var self = this;
-  $("#createLayer").on('click', function () {
-    self.app.forward('step4');
-  });
+      for (var i = 0; i < layersGlobal.length; i++) {
+        $("#" + i + "").click(function () {
+          index = $(this).attr('id');
+          sessionStorage.setItem("index", index);
+          var add = layersGlobal[index];
+          clicked = add;
+          sessionStorage.setItem("clicked", clicked);
+          self.app.forward('step4Edit');
+        });
+      }
+    }
+  }]);
 
-  for (var i = 0; i < layersGlobal.length; i++) {
-    var layer = layersGlobal[i];
-    var buttonEdit = "<button class='btn btn-secondary editButton' id='" + i + "' >Edit</button>";
-    var appendRow = "<tr><td>" + layer + "</td><td>" + buttonEdit + "</td></tr>";
-    $('#tableLayers tbody').append(appendRow);
-  }
-
-  for (var i = 0; i < layersGlobal.length; i++) {
-    $("#" + i + "").click(function () {
-      index = $(this).attr('id');
-      sessionStorage.setItem("index", index);
-      var add = layersGlobal[index];
-      clicked = add;
-      sessionStorage.setItem("clicked", clicked);
-      self.app.forward('step4Edit');
-    });
-  }
-};
-
-Step5Page.prototype.dispose = function () {};
+  return Step5Page;
+}();
 
 module.exports = Step5Page;
 

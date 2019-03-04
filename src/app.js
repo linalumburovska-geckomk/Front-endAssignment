@@ -1,12 +1,12 @@
 window['jQuery'] = require('jquery')
 
 var App = require('./main')
-var Step1Page = require('./pages/step1')
-var Step2Page = require('./pages/step2')
-var Step3Page = require('./pages/step3')
-var Step4Page = require('./pages/step4')
-var Step5Page = require('./pages/step5')
-var Step4EditPage = require('./pages/step4Edit')
+var Step1Page = require('./pages/Step1Page')
+var Step2Page = require('./pages/Step2Page')
+var Step3Page = require('./pages/Step3Page')
+var Step4Page = require('./pages/Step4Page')
+var Step5Page = require('./pages/Step5Page')
+var Step4EditPage = require('./pages/Step4EditPage')
 
 var app = new App()
 app.addPage('step1', new Step1Page(app))
