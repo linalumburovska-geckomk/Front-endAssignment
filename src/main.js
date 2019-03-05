@@ -15,12 +15,6 @@ class Main {
         this.data = {}
     }
 
-    addPage(url,page) {
-        if (this.isPageValid(page)) {
-            this.pageMap[url] = page
-        }
-    }
-
     load(url) {
         return $.ajax({
                 async: true,
