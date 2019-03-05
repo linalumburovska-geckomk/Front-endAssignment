@@ -19,7 +19,7 @@ class Step4EditPage {
     
         var self=this
         $("#backStep4Edit").on('click', function(){
-            self.app.forward('step3')        
+            self.app.forward('step3', self.app.pageMap['step3'])        
         })
     
         $("#saveStep4Edit").on('click', function(){
@@ -44,7 +44,7 @@ class Step4EditPage {
                         setTimeout(
                             function() {
                                 $('#modalEditLayer').modal('hide')
-                                self.app.forward('step5')
+                                self.app.forward('step5',self.app.pageMap['step5'])
                             }, 1500);
                         }
                 }

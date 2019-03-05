@@ -1,4 +1,5 @@
 var $=require('jquery')
+var Step5Page = require('./Step5Page')
 
 $.getScript( "/plugins.js")
 
@@ -14,7 +15,7 @@ class Step4Page {
         layersGlobal=JSON.parse(sessionStorage.getItem('layersGlobal'))
         var self=this
         $('#backStep4').on('click', function(){
-            self.app.forward('step3')
+            self.app.forward('step3', self.app.pageMap['step3'])
         })
     
         $('#saveStep4').on('click', function(){
@@ -39,7 +40,7 @@ class Step4Page {
                         setTimeout(
                             function() {
                                 $('#modalSaveLayer').modal('hide')
-                                self.app.forward('step5')
+                                self.app.forward('step5', new Step5Page(self.app))
                             }, 1500);
                     }
                 }

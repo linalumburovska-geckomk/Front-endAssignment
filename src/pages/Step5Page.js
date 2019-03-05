@@ -1,4 +1,5 @@
 var $=require('jquery')
+var Step4EditPage = require('./Step4EditPage')
 
 var layersGlobal
 var clicked
@@ -16,7 +17,7 @@ class Step5Page {
         $('#nameFeed').append(sessionStorage.getItem("name"))
         var self=this
         $("#createLayer").on('click', function(){
-            self.app.forward('step4')
+            self.app.forward('step4', self.app.pageMap['step4'])
         })
         
     
@@ -34,7 +35,7 @@ class Step5Page {
                 var add=layersGlobal[index]
                 clicked=add   
                 sessionStorage.setItem("clicked",clicked)
-                self.app.forward('step4Edit')
+                self.app.forward('step4Edit', new Step4EditPage(self.app))
             })
         }
     }

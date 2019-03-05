@@ -1,4 +1,6 @@
 var $ = require('jquery')
+var Step3Page = require('./Step3Page')
+
 var name=""
 var desc=""
 var image=""
@@ -13,7 +15,7 @@ class Step2Page {
     init() {
         var self = this
         $('#back').on('click', function() {
-            self.app.forward('step1')
+            self.app.forward('step1',self.app.pageMap['step1'])
         })
         $('#save').on('click', function() {
     
@@ -40,7 +42,7 @@ class Step2Page {
                 
                 if(name!='' &&  desc!='' &&  image!=''){
                     sessionStorage.setItem('name', name.toUpperCase())
-                    self.app.forward('step3')
+                    self.app.forward('step3', new Step3Page(self.app))
                 } else if(name!='' &&  desc=='' &&  image=='') {
                     $('#sanitizeName, #sanitizeDescription, #sanitizeImage, #errorName, #errorImage').hide()
                     $('#errorDescription, #errorImage').show()

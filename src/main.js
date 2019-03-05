@@ -32,7 +32,10 @@ class Main {
             })
     }
 
-    forward(url) {
+    forward(url,page) {
+        if (this.isPageValid(page)) {
+            this.pageMap[url] = page
+        }
         if (typeof this.pageMap[url] !== 'undefined') {
             this.currentPage = this.pageMap[url]
             var self = this

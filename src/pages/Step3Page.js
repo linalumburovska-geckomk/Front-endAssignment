@@ -1,4 +1,5 @@
 var $ = require('jquery')
+var Step4Page = require('./Step4Page')
 
 class Step3Page {
     constructor(app){
@@ -9,7 +10,7 @@ class Step3Page {
         $('#nameFeed').append(sessionStorage.getItem('name',name))
         var self=this
         $("#createLayer").on('click', function(){
-            self.app.forward('step4')
+            self.app.forward('step4', new Step4Page(self.app))
         })
     }
 }

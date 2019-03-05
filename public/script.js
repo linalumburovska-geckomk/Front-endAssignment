@@ -10414,7 +10414,11 @@ function () {
     }
   }, {
     key: "forward",
-    value: function forward(url) {
+    value: function forward(url, page) {
+      if (this.isPageValid(page)) {
+        this.pageMap[url] = page;
+      }
+
       if (typeof this.pageMap[url] !== 'undefined') {
         this.currentPage = this.pageMap[url];
         var self = this;
@@ -10467,38 +10471,14 @@ var Main = require('./Main');
 
 var Step1Page = require('./pages/Step1Page');
 
-var Step2Page = require('./pages/Step2Page');
-
-var Step3Page = require('./pages/Step3Page');
-
-var Step4Page = require('./pages/Step4Page');
-
-var Step5Page = require('./pages/Step5Page');
-
-var Step4EditPage = require('./pages/Step4EditPage');
-
 var app = new Main();
-app.addPage('step1', new Step1Page(app));
-app.addPage('step2', new Step2Page(app));
-app.addPage('step3', new Step3Page(app));
-app.addPage('step4', new Step4Page(app));
-app.addPage('step5', new Step5Page(app));
-app.addPage('step4Edit', new Step4EditPage(app));
 var tmpLocation = window.location.href;
 
 if (tmpLocation.indexOf('step') === -1) {
-  app.forward('step1');
-} else {
-  var lastFive = tmpLocation.substr(tmpLocation.length - 5);
-
-  if (lastFive[0] == 4) {
-    app.forward('step4Edit');
-  } else {
-    app.forward(lastFive);
-  }
+  app.forward('step1', new Step1Page(app));
 }
 
-},{"./Main":2,"./pages/Step1Page":4,"./pages/Step2Page":5,"./pages/Step3Page":6,"./pages/Step4EditPage":7,"./pages/Step4Page":8,"./pages/Step5Page":9,"jquery":1}],4:[function(require,module,exports){
+},{"./Main":2,"./pages/Step1Page":4,"jquery":1}],4:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10509,6 +10489,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var $ = require('jquery');
 
+var Step2Page = require('./Step2Page');
+
 var Step1Page =
 /*#__PURE__*/
 function () {
@@ -10516,17 +10498,7 @@ function () {
     _classCallCheck(this, Step1Page);
 
     this.app = app;
-  } // load() {
-  //     return $.ajax({
-  //             async: true,
-  //             url: "step1.html",
-  //             type: 'GET',
-  //         }).then(function(data){
-  //             $('#root').empty()
-  //             $('#root').append(data)
-  //         })
-  // }
-
+  }
 
   _createClass(Step1Page, [{
     key: "init",
@@ -10534,7 +10506,7 @@ function () {
       var self = this;
       $('#button1').on('click', function (e) {
         e.preventDefault();
-        self.app.forward('step2');
+        self.app.forward('step2', new Step2Page(self.app));
       });
     }
   }]);
@@ -10544,7 +10516,7 @@ function () {
 
 module.exports = Step1Page;
 
-},{"jquery":1}],5:[function(require,module,exports){
+},{"./Step2Page":5,"jquery":1}],5:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10554,6 +10526,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var $ = require('jquery');
+
+var Step3Page = require('./Step3Page');
 
 var name = "";
 var desc = "";
@@ -10567,24 +10541,14 @@ function () {
     _classCallCheck(this, Step2Page);
 
     this.app = app;
-  } // load() {
-  //     return $.ajax({
-  //         async: true,
-  //         url: "step2.html",
-  //         type: 'GET',
-  //     }).then(function(data){
-  //         $('#root').empty()
-  //         $('#root').append(data)
-  //     })
-  // }
-
+  }
 
   _createClass(Step2Page, [{
     key: "init",
     value: function init() {
       var self = this;
       $('#back').on('click', function () {
-        self.app.forward('step1');
+        self.app.forward('step1', self.app.pageMap['step1']);
       });
       $('#save').on('click', function () {
         name = $('#name').val();
@@ -10608,7 +10572,7 @@ function () {
 
           if (name != '' && desc != '' && image != '') {
             sessionStorage.setItem('name', name.toUpperCase());
-            self.app.forward('step3');
+            self.app.forward('step3', new Step3Page(self.app));
           } else if (name != '' && desc == '' && image == '') {
             $('#sanitizeName, #sanitizeDescription, #sanitizeImage, #errorName, #errorImage').hide();
             $('#errorDescription, #errorImage').show();
@@ -10641,7 +10605,7 @@ function () {
 
 module.exports = Step2Page;
 
-},{"jquery":1}],6:[function(require,module,exports){
+},{"./Step3Page":6,"jquery":1}],6:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10652,6 +10616,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var $ = require('jquery');
 
+var Step4Page = require('./Step4Page');
+
 var Step3Page =
 /*#__PURE__*/
 function () {
@@ -10659,17 +10625,7 @@ function () {
     _classCallCheck(this, Step3Page);
 
     this.app = app;
-  } // load() {
-  //     return $.ajax({
-  //         async: true,
-  //         url: "step3.html",
-  //         type: 'GET',
-  //     }).then(function(data){
-  //         $('#root').empty()
-  //         $('#root').append(data)
-  //     })
-  // }
-
+  }
 
   _createClass(Step3Page, [{
     key: "init",
@@ -10677,7 +10633,7 @@ function () {
       $('#nameFeed').append(sessionStorage.getItem('name', name));
       var self = this;
       $("#createLayer").on('click', function () {
-        self.app.forward('step4');
+        self.app.forward('step4', new Step4Page(self.app));
       });
     }
   }]);
@@ -10687,7 +10643,7 @@ function () {
 
 module.exports = Step3Page;
 
-},{"jquery":1}],7:[function(require,module,exports){
+},{"./Step4Page":8,"jquery":1}],7:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10710,17 +10666,7 @@ function () {
     _classCallCheck(this, Step4EditPage);
 
     this.app = app;
-  } // load() {
-  //     return $.ajax({
-  //         async: true,
-  //         url: "step4Edit.html",
-  //         type: 'GET',
-  //     }).then(function(data){
-  //         $('#root').empty()
-  //         $('#root').append(data)
-  //     })
-  // }
-
+  }
 
   _createClass(Step4EditPage, [{
     key: "init",
@@ -10731,7 +10677,7 @@ function () {
       $("#nameEdit").val(clicked);
       var self = this;
       $("#backStep4Edit").on('click', function () {
-        self.app.forward('step3');
+        self.app.forward('step3', self.app.pageMap['step3']);
       });
       $("#saveStep4Edit").on('click', function () {
         var nameStep4 = $("#nameEdit").val();
@@ -10754,7 +10700,7 @@ function () {
               sessionStorage.setItem("layersGlobal", JSON.stringify(layersGlobal));
               setTimeout(function () {
                 $('#modalEditLayer').modal('hide');
-                self.app.forward('step5');
+                self.app.forward('step5', self.app.pageMap['step5']);
               }, 1500);
             }
           }
@@ -10789,6 +10735,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var $ = require('jquery');
 
+var Step5Page = require('./Step5Page');
+
 $.getScript("/plugins.js");
 var layersGlobal = null;
 
@@ -10799,17 +10747,7 @@ function () {
     _classCallCheck(this, Step4Page);
 
     this.app = app;
-  } // load() {
-  //     return $.ajax({
-  //         async: true,
-  //         url: "step4.html",
-  //         type: 'GET',
-  //     }).then(function(data){
-  //         $('#root').empty()
-  //         $('#root').append(data)
-  //     })
-  // }
-
+  }
 
   _createClass(Step4Page, [{
     key: "init",
@@ -10817,7 +10755,7 @@ function () {
       layersGlobal = JSON.parse(sessionStorage.getItem('layersGlobal'));
       var self = this;
       $('#backStep4').on('click', function () {
-        self.app.forward('step3');
+        self.app.forward('step3', self.app.pageMap['step3']);
       });
       $('#saveStep4').on('click', function () {
         var nameStep4 = $("#nameStep4").val();
@@ -10840,7 +10778,7 @@ function () {
               sessionStorage.setItem("layersGlobal", JSON.stringify(layersGlobal));
               setTimeout(function () {
                 $('#modalSaveLayer').modal('hide');
-                self.app.forward('step5');
+                self.app.forward('step5', new Step5Page(self.app));
               }, 1500);
             }
           }
@@ -10864,7 +10802,7 @@ var valueExists = function valueExists(layers, name) {
 
 module.exports = Step4Page;
 
-},{"jquery":1}],9:[function(require,module,exports){
+},{"./Step5Page":9,"jquery":1}],9:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10874,6 +10812,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var $ = require('jquery');
+
+var Step4EditPage = require('./Step4EditPage');
 
 var layersGlobal;
 var clicked;
@@ -10886,17 +10826,7 @@ function () {
     _classCallCheck(this, Step5Page);
 
     this.app = app;
-  } // load() {
-  //     return $.ajax({
-  //         async: true,
-  //         url: "step5.html",
-  //         type: 'GET',
-  //     }).then(function(data){
-  //         $('#root').empty()
-  //         $('#root').append(data)
-  //     })
-  // }
-
+  }
 
   _createClass(Step5Page, [{
     key: "init",
@@ -10907,7 +10837,7 @@ function () {
       $('#nameFeed').append(sessionStorage.getItem("name"));
       var self = this;
       $("#createLayer").on('click', function () {
-        self.app.forward('step4');
+        self.app.forward('step4', self.app.pageMap['step4']);
       });
 
       for (var i = 0; i < layersGlobal.length; i++) {
@@ -10924,7 +10854,7 @@ function () {
           var add = layersGlobal[index];
           clicked = add;
           sessionStorage.setItem("clicked", clicked);
-          self.app.forward('step4Edit');
+          self.app.forward('step4Edit', new Step4EditPage(self.app));
         });
       }
     }
@@ -10935,4 +10865,4 @@ function () {
 
 module.exports = Step5Page;
 
-},{"jquery":1}]},{},[3]);
+},{"./Step4EditPage":7,"jquery":1}]},{},[3]);
