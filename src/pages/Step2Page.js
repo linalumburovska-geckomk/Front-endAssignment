@@ -11,17 +11,13 @@ class Step2Page {
     }
 
     load() {
-        return new Promise(function(resolve) {
-            $.ajax({
-                async: true,
-                url: "step2.html",
-                type: 'GET',
-                success: function(data) {
-                    $('#root').empty()
-                    $('#root').append(data)
-                    resolve()
-                }
-            });
+        return $.ajax({
+            async: true,
+            url: "step2.html",
+            type: 'GET',
+        }).then(function(data){
+            $('#root').empty()
+            $('#root').append(data)
         })
     }
 

@@ -10367,9 +10367,91 @@ return jQuery;
 },{}],2:[function(require,module,exports){
 "use strict";
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var clicked = '';
+var layersGlobal = [];
+var index = -1;
+sessionStorage.setItem("clicked", clicked);
+sessionStorage.setItem("layersGlobal", JSON.stringify(layersGlobal));
+sessionStorage.setItem("index", index);
+
+var Main =
+/*#__PURE__*/
+function () {
+  function Main() {
+    _classCallCheck(this, Main);
+
+    this.pageMap = {};
+    this.currentPage = null;
+    this.data = {};
+  }
+
+  _createClass(Main, [{
+    key: "addPage",
+    value: function addPage(url, page) {
+      if (this.isPageValid(page)) {
+        this.pageMap[url] = page;
+      }
+    }
+  }, {
+    key: "forward",
+    value: function forward(url) {
+      if (typeof this.pageMap[url] !== 'undefined') {
+        this.currentPage = this.pageMap[url];
+        var self = this;
+        this.currentPage.load().then(function () {
+          self.currentPage.init();
+        }).catch(function (e) {
+          console.error(e);
+        }); // Implement the history api from the browser
+
+        window.history.pushState(url, null, url);
+        window.addEventListener("popstate", function (e) {
+          var character = e.state;
+
+          if (character == null) {
+            self.currentPage = self.pageMap['step1'];
+            self.currentPage.load().then(function () {
+              self.currentPage.init();
+            }).catch(function (e) {
+              console.error(e);
+            });
+          } else {
+            self.currentPage = self.pageMap[character];
+            self.currentPage.load().then(function () {
+              self.currentPage.init();
+            }).catch(function (e) {
+              console.error(e);
+            });
+          }
+        });
+      }
+    }
+  }, {
+    key: "isPageValid",
+    value: function isPageValid(page) {
+      var loadState = typeof page['load'] === 'function';
+      var initState = typeof page['init'] === 'function';
+      return loadState && initState;
+    }
+  }]);
+
+  return Main;
+}();
+
+module.exports = Main;
+
+},{}],3:[function(require,module,exports){
+"use strict";
+
 window['jQuery'] = require('jquery');
 
-var App = require('./main');
+var Main = require('./Main');
 
 var Step1Page = require('./pages/Step1Page');
 
@@ -10383,7 +10465,7 @@ var Step5Page = require('./pages/Step5Page');
 
 var Step4EditPage = require('./pages/Step4EditPage');
 
-var app = new App();
+var app = new Main();
 app.addPage('step1', new Step1Page(app));
 app.addPage('step2', new Step2Page(app));
 app.addPage('step3', new Step3Page(app));
@@ -10404,71 +10486,7 @@ if (tmpLocation.indexOf('step') === -1) {
   }
 }
 
-},{"./main":3,"./pages/Step1Page":4,"./pages/Step2Page":5,"./pages/Step3Page":6,"./pages/Step4EditPage":7,"./pages/Step4Page":8,"./pages/Step5Page":9,"jquery":1}],3:[function(require,module,exports){
-"use strict";
-
-var clicked = '';
-var layersGlobal = [];
-var index = -1;
-
-var App = function App() {
-  this.pageMap = {};
-  this.currentPage = null;
-  this.data = {};
-};
-
-sessionStorage.setItem("clicked", clicked);
-sessionStorage.setItem("layersGlobal", JSON.stringify(layersGlobal));
-sessionStorage.setItem("index", index);
-
-App.prototype.addPage = function (url, page) {
-  if (this.isPageValid(page)) {
-    this.pageMap[url] = page;
-  }
-};
-
-App.prototype.forward = function (url) {
-  if (typeof this.pageMap[url] !== 'undefined') {
-    this.currentPage = this.pageMap[url];
-    var self = this;
-    this.currentPage.load().then(function () {
-      self.currentPage.init();
-    }).catch(function (e) {
-      console.error(e);
-    }); // Implement the history api from the browser
-
-    window.history.pushState(url, null, url);
-    window.addEventListener("popstate", function (e) {
-      var character = e.state;
-
-      if (character == null) {
-        self.currentPage = self.pageMap['step1'];
-        self.currentPage.load().then(function () {
-          self.currentPage.init();
-        }).catch(function (e) {
-          console.error(e);
-        });
-      } else {
-        self.currentPage = self.pageMap[character];
-        self.currentPage.load().then(function () {
-          self.currentPage.init();
-        }).catch(function (e) {
-          console.error(e);
-        });
-      }
-    });
-  }
-};
-
-App.prototype.isPageValid = function (page) {
-  var loadState = typeof page['load'] === 'function';
-  var initState = typeof page['init'] === 'function';
-  return loadState && initState;
-};
-
-module.exports = App;
-
-},{}],4:[function(require,module,exports){
+},{"./Main":2,"./pages/Step1Page":4,"./pages/Step2Page":5,"./pages/Step3Page":6,"./pages/Step4EditPage":7,"./pages/Step4Page":8,"./pages/Step5Page":9,"jquery":1}],4:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10491,17 +10509,13 @@ function () {
   _createClass(Step1Page, [{
     key: "load",
     value: function load() {
-      return new Promise(function (resolve) {
-        $.ajax({
-          async: true,
-          url: "step1.html",
-          type: 'GET',
-          success: function success(data) {
-            $('#root').empty();
-            $('#root').append(data);
-            resolve();
-          }
-        });
+      return $.ajax({
+        async: true,
+        url: "step1.html",
+        type: 'GET'
+      }).then(function (data) {
+        $('#root').empty();
+        $('#root').append(data);
       });
     }
   }, {
@@ -10548,17 +10562,13 @@ function () {
   _createClass(Step2Page, [{
     key: "load",
     value: function load() {
-      return new Promise(function (resolve) {
-        $.ajax({
-          async: true,
-          url: "step2.html",
-          type: 'GET',
-          success: function success(data) {
-            $('#root').empty();
-            $('#root').append(data);
-            resolve();
-          }
-        });
+      return $.ajax({
+        async: true,
+        url: "step2.html",
+        type: 'GET'
+      }).then(function (data) {
+        $('#root').empty();
+        $('#root').append(data);
       });
     }
   }, {
@@ -10646,17 +10656,13 @@ function () {
   _createClass(Step3Page, [{
     key: "load",
     value: function load() {
-      return new Promise(function (resolve) {
-        $.ajax({
-          async: true,
-          url: "step3.html",
-          type: 'GET',
-          success: function success(data) {
-            $('#root').empty();
-            $('#root').append(data);
-            resolve();
-          }
-        });
+      return $.ajax({
+        async: true,
+        url: "step3.html",
+        type: 'GET'
+      }).then(function (data) {
+        $('#root').empty();
+        $('#root').append(data);
       });
     }
   }, {
@@ -10703,17 +10709,13 @@ function () {
   _createClass(Step4EditPage, [{
     key: "load",
     value: function load() {
-      return new Promise(function (resolve) {
-        $.ajax({
-          async: true,
-          url: "step4Edit.html",
-          type: 'GET',
-          success: function success(data) {
-            $('#root').empty();
-            $('#root').append(data);
-            resolve();
-          }
-        });
+      return $.ajax({
+        async: true,
+        url: "step4Edit.html",
+        type: 'GET'
+      }).then(function (data) {
+        $('#root').empty();
+        $('#root').append(data);
       });
     }
   }, {
@@ -10798,17 +10800,13 @@ function () {
   _createClass(Step4Page, [{
     key: "load",
     value: function load() {
-      return new Promise(function (resolve) {
-        $.ajax({
-          async: true,
-          url: "step4.html",
-          type: 'GET',
-          success: function success(data) {
-            $('#root').empty();
-            $('#root').append(data);
-            resolve();
-          }
-        });
+      return $.ajax({
+        async: true,
+        url: "step4.html",
+        type: 'GET'
+      }).then(function (data) {
+        $('#root').empty();
+        $('#root').append(data);
       });
     }
   }, {
@@ -10891,17 +10889,13 @@ function () {
   _createClass(Step5Page, [{
     key: "load",
     value: function load() {
-      return new Promise(function (resolve) {
-        $.ajax({
-          async: true,
-          url: "step5.html",
-          type: 'GET',
-          success: function success(data) {
-            $('#root').empty();
-            $('#root').append(data);
-            resolve();
-          }
-        });
+      return $.ajax({
+        async: true,
+        url: "step5.html",
+        type: 'GET'
+      }).then(function (data) {
+        $('#root').empty();
+        $('#root').append(data);
       });
     }
   }, {
@@ -10941,4 +10935,4 @@ function () {
 
 module.exports = Step5Page;
 
-},{"jquery":1}]},{},[2]);
+},{"jquery":1}]},{},[3]);

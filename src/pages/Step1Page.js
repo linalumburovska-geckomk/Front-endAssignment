@@ -7,18 +7,14 @@ class Step1Page {
     }
     
     load() {
-        return new Promise(function(resolve) {
-            $.ajax({
+        return $.ajax({
                 async: true,
                 url: "step1.html",
                 type: 'GET',
-                success: function(data) {
-                    $('#root').empty()
-                    $('#root').append(data)
-                    resolve()
-                }
-            });
-        })
+            }).then(function(data){
+                $('#root').empty()
+                $('#root').append(data)
+            })
     }
 
     init() {
