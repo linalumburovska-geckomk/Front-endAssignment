@@ -1,3 +1,4 @@
+var $ = require('jquery')
 var clicked ='';
 var layersGlobal=[];
 var index=-1;
@@ -20,11 +21,22 @@ class Main {
         }
     }
 
+    load(url) {
+        return $.ajax({
+                async: true,
+                url: url+".html",
+                type: 'GET',
+            }).then(function(data){
+                $('#root').empty()
+                $('#root').append(data)
+            })
+    }
+
     forward(url) {
         if (typeof this.pageMap[url] !== 'undefined') {
             this.currentPage = this.pageMap[url]
             var self = this
-            this.currentPage.load().then(function() {
+            this.load(url).then(function() {
                 self.currentPage.init()
             }).catch(function(e) {
                 console.error(e)
@@ -35,14 +47,14 @@ class Main {
                 var character = e.state
                 if (character == null) {
                     self.currentPage = self.pageMap['step1']
-                    self.currentPage.load().then(function() {
+                    self.load('step1').then(function() {
                         self.currentPage.init()
                     }).catch(function(e) {
                         console.error(e)
                     })
                 } else {
                     self.currentPage = self.pageMap[character]
-                    self.currentPage.load().then(function() {
+                    self.load(character).then(function() {
                         self.currentPage.init()
                     }).catch(function(e) {
                         console.error(e)
@@ -54,9 +66,7 @@ class Main {
     }
 
     isPageValid(page) {
-        var loadState = typeof page['load'] === 'function'
-        var initState = typeof page['init'] === 'function'
-        return loadState && initState
+        return typeof page['init'] === 'function'
     }
 
 }

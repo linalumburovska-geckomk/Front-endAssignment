@@ -5,17 +5,6 @@ class Step3Page {
         this.app= app
     }
 
-    load() {
-        return $.ajax({
-            async: true,
-            url: "step3.html",
-            type: 'GET',
-        }).then(function(data){
-            $('#root').empty()
-            $('#root').append(data)
-        })
-    }
-
     init() {
         $('#nameFeed').append(sessionStorage.getItem('name',name))
         var self=this

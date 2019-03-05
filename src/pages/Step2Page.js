@@ -10,17 +10,6 @@ class Step2Page {
         this.app=app
     }
 
-    load() {
-        return $.ajax({
-            async: true,
-            url: "step2.html",
-            type: 'GET',
-        }).then(function(data){
-            $('#root').empty()
-            $('#root').append(data)
-        })
-    }
-
     init() {
         var self = this
         $('#back').on('click', function() {

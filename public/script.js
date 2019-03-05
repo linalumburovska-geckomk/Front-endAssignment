@@ -10373,6 +10373,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var $ = require('jquery');
+
 var clicked = '';
 var layersGlobal = [];
 var index = -1;
@@ -10399,12 +10401,24 @@ function () {
       }
     }
   }, {
+    key: "load",
+    value: function load(url) {
+      return $.ajax({
+        async: true,
+        url: url + ".html",
+        type: 'GET'
+      }).then(function (data) {
+        $('#root').empty();
+        $('#root').append(data);
+      });
+    }
+  }, {
     key: "forward",
     value: function forward(url) {
       if (typeof this.pageMap[url] !== 'undefined') {
         this.currentPage = this.pageMap[url];
         var self = this;
-        this.currentPage.load().then(function () {
+        this.load(url).then(function () {
           self.currentPage.init();
         }).catch(function (e) {
           console.error(e);
@@ -10416,14 +10430,14 @@ function () {
 
           if (character == null) {
             self.currentPage = self.pageMap['step1'];
-            self.currentPage.load().then(function () {
+            self.load('step1').then(function () {
               self.currentPage.init();
             }).catch(function (e) {
               console.error(e);
             });
           } else {
             self.currentPage = self.pageMap[character];
-            self.currentPage.load().then(function () {
+            self.load(character).then(function () {
               self.currentPage.init();
             }).catch(function (e) {
               console.error(e);
@@ -10435,9 +10449,7 @@ function () {
   }, {
     key: "isPageValid",
     value: function isPageValid(page) {
-      var loadState = typeof page['load'] === 'function';
-      var initState = typeof page['init'] === 'function';
-      return loadState && initState;
+      return typeof page['init'] === 'function';
     }
   }]);
 
@@ -10446,7 +10458,7 @@ function () {
 
 module.exports = Main;
 
-},{}],3:[function(require,module,exports){
+},{"jquery":1}],3:[function(require,module,exports){
 "use strict";
 
 window['jQuery'] = require('jquery');
@@ -10504,21 +10516,19 @@ function () {
     _classCallCheck(this, Step1Page);
 
     this.app = app;
-  }
+  } // load() {
+  //     return $.ajax({
+  //             async: true,
+  //             url: "step1.html",
+  //             type: 'GET',
+  //         }).then(function(data){
+  //             $('#root').empty()
+  //             $('#root').append(data)
+  //         })
+  // }
+
 
   _createClass(Step1Page, [{
-    key: "load",
-    value: function load() {
-      return $.ajax({
-        async: true,
-        url: "step1.html",
-        type: 'GET'
-      }).then(function (data) {
-        $('#root').empty();
-        $('#root').append(data);
-      });
-    }
-  }, {
     key: "init",
     value: function init() {
       var self = this;
@@ -10557,21 +10567,19 @@ function () {
     _classCallCheck(this, Step2Page);
 
     this.app = app;
-  }
+  } // load() {
+  //     return $.ajax({
+  //         async: true,
+  //         url: "step2.html",
+  //         type: 'GET',
+  //     }).then(function(data){
+  //         $('#root').empty()
+  //         $('#root').append(data)
+  //     })
+  // }
+
 
   _createClass(Step2Page, [{
-    key: "load",
-    value: function load() {
-      return $.ajax({
-        async: true,
-        url: "step2.html",
-        type: 'GET'
-      }).then(function (data) {
-        $('#root').empty();
-        $('#root').append(data);
-      });
-    }
-  }, {
     key: "init",
     value: function init() {
       var self = this;
@@ -10651,21 +10659,19 @@ function () {
     _classCallCheck(this, Step3Page);
 
     this.app = app;
-  }
+  } // load() {
+  //     return $.ajax({
+  //         async: true,
+  //         url: "step3.html",
+  //         type: 'GET',
+  //     }).then(function(data){
+  //         $('#root').empty()
+  //         $('#root').append(data)
+  //     })
+  // }
+
 
   _createClass(Step3Page, [{
-    key: "load",
-    value: function load() {
-      return $.ajax({
-        async: true,
-        url: "step3.html",
-        type: 'GET'
-      }).then(function (data) {
-        $('#root').empty();
-        $('#root').append(data);
-      });
-    }
-  }, {
     key: "init",
     value: function init() {
       $('#nameFeed').append(sessionStorage.getItem('name', name));
@@ -10704,21 +10710,19 @@ function () {
     _classCallCheck(this, Step4EditPage);
 
     this.app = app;
-  }
+  } // load() {
+  //     return $.ajax({
+  //         async: true,
+  //         url: "step4Edit.html",
+  //         type: 'GET',
+  //     }).then(function(data){
+  //         $('#root').empty()
+  //         $('#root').append(data)
+  //     })
+  // }
+
 
   _createClass(Step4EditPage, [{
-    key: "load",
-    value: function load() {
-      return $.ajax({
-        async: true,
-        url: "step4Edit.html",
-        type: 'GET'
-      }).then(function (data) {
-        $('#root').empty();
-        $('#root').append(data);
-      });
-    }
-  }, {
     key: "init",
     value: function init() {
       index = sessionStorage.getItem('index');
@@ -10795,21 +10799,19 @@ function () {
     _classCallCheck(this, Step4Page);
 
     this.app = app;
-  }
+  } // load() {
+  //     return $.ajax({
+  //         async: true,
+  //         url: "step4.html",
+  //         type: 'GET',
+  //     }).then(function(data){
+  //         $('#root').empty()
+  //         $('#root').append(data)
+  //     })
+  // }
+
 
   _createClass(Step4Page, [{
-    key: "load",
-    value: function load() {
-      return $.ajax({
-        async: true,
-        url: "step4.html",
-        type: 'GET'
-      }).then(function (data) {
-        $('#root').empty();
-        $('#root').append(data);
-      });
-    }
-  }, {
     key: "init",
     value: function init() {
       layersGlobal = JSON.parse(sessionStorage.getItem('layersGlobal'));
@@ -10884,21 +10886,19 @@ function () {
     _classCallCheck(this, Step5Page);
 
     this.app = app;
-  }
+  } // load() {
+  //     return $.ajax({
+  //         async: true,
+  //         url: "step5.html",
+  //         type: 'GET',
+  //     }).then(function(data){
+  //         $('#root').empty()
+  //         $('#root').append(data)
+  //     })
+  // }
+
 
   _createClass(Step5Page, [{
-    key: "load",
-    value: function load() {
-      return $.ajax({
-        async: true,
-        url: "step5.html",
-        type: 'GET'
-      }).then(function (data) {
-        $('#root').empty();
-        $('#root').append(data);
-      });
-    }
-  }, {
     key: "init",
     value: function init() {
       index = sessionStorage.getItem('index');

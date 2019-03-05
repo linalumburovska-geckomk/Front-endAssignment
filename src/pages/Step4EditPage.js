@@ -11,17 +11,6 @@ class Step4EditPage {
         this.app=app
     }
 
-    load() {
-        return $.ajax({
-            async: true,
-            url: "step4Edit.html",
-            type: 'GET',
-        }).then(function(data){
-            $('#root').empty()
-            $('#root').append(data)
-        })
-    }
-
     init() {
         index=sessionStorage.getItem('index')
         layersGlobal = JSON.parse(sessionStorage.getItem('layersGlobal'))

@@ -10,17 +10,6 @@ class Step4Page {
         this.app=app
     }
 
-    load() {
-        return $.ajax({
-            async: true,
-            url: "step4.html",
-            type: 'GET',
-        }).then(function(data){
-            $('#root').empty()
-            $('#root').append(data)
-        })
-    }
-  
     init() {
         layersGlobal=JSON.parse(sessionStorage.getItem('layersGlobal'))
         var self=this

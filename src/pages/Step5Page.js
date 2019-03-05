@@ -9,17 +9,6 @@ class Step5Page {
         this.app = app
     }
 
-    load() {
-        return $.ajax({
-            async: true,
-            url: "step5.html",
-            type: 'GET',
-        }).then(function(data){
-            $('#root').empty()
-            $('#root').append(data)
-        })
-    }
-
     init() {
         index=sessionStorage.getItem('index')
         clicked = sessionStorage.getItem('clicked')
