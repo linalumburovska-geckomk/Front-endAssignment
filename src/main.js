@@ -18,7 +18,7 @@ class Main {
     load(url) {
         return $.ajax({
                 async: true,
-                url: url+".html",
+                url: "steps/"+url+".html",
                 type: 'GET',
             }).then(function(data){
                 $('#root').empty()
