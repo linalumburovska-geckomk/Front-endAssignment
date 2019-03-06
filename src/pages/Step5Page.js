@@ -1,11 +1,12 @@
-var $=require('jquery')
-var Step4EditPage = require('./Step4EditPage')
+const $=require('jquery')
+const Step4EditPage = require('./Step4EditPage')
 
-var layersGlobal
-var clicked
-var index
+let layersGlobal
+let clicked
+let index
 
 class Step5Page {
+
     constructor(app) {
         this.app = app
     }
@@ -15,20 +16,20 @@ class Step5Page {
         clicked = sessionStorage.getItem('clicked')
         layersGlobal = JSON.parse(sessionStorage.getItem('layersGlobal'))
         $('#nameFeed').append(sessionStorage.getItem("name"))
-        var self=this
-        $("#createLayer").on('click', function(){
+        let self=this
+        $("#createLayer").on('click', () => {
             self.app.forward('step4', self.app.pageMap['step4'])
         })
         
     
-        for(var i=0; i<layersGlobal.length;i++) {
-            var layer=layersGlobal[i]
-            var buttonEdit="<button class='btn btn-secondary editButton' id='" + i + "' >Edit</button>"
-            var appendRow="<tr><td>"+ layer +"</td><td>" + buttonEdit + "</td></tr>"
+        for(let i=0; i<layersGlobal.length;i++) {
+            let layer=layersGlobal[i]
+            let buttonEdit="<button class='btn btn-secondary editButton' id='" + i + "' >Edit</button>"
+            let appendRow="<tr><td>"+ layer +"</td><td>" + buttonEdit + "</td></tr>"
             $('#tableLayers tbody').append(appendRow)
         }    
     
-        for(var i=0; i<layersGlobal.length;i++) {
+        for(let i=0; i<layersGlobal.length;i++) {
             $("#"+i+"").click(function(){
                 index= $(this).attr('id')
                 sessionStorage.setItem("index",index)

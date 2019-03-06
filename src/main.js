@@ -1,7 +1,7 @@
-var $ = require('jquery')
-var clicked ='';
-var layersGlobal=[];
-var index=-1;
+const $ = require('jquery')
+let clicked ='';
+let layersGlobal=[];
+let index=-1;
 
 sessionStorage.setItem("clicked",clicked)
 sessionStorage.setItem("layersGlobal", JSON.stringify(layersGlobal))
@@ -20,7 +20,7 @@ class Main {
                 async: true,
                 url: "steps/"+url+".html",
                 type: 'GET',
-            }).then(function(data){
+            }).then( (data) => {
                 $('#root').empty()
                 $('#root').append(data)
             })
@@ -32,28 +32,28 @@ class Main {
         }
         if (typeof this.pageMap[url] !== 'undefined') {
             this.currentPage = this.pageMap[url]
-            var self = this
-            this.load(url).then(function() {
+            let self = this
+            this.load(url).then(() => {
                 self.currentPage.init()
-            }).catch(function(e) {
+            }).catch( (e) => {
                 console.error(e)
             })
             // Implement the history api from the browser
             window.history.pushState(url, null, url);
-            window.addEventListener("popstate", function(e){  
-                var character = e.state
+            window.addEventListener("popstate", (e) => {  
+                let character = e.state
                 if (character == null) {
                     self.currentPage = self.pageMap['step1']
-                    self.load('step1').then(function() {
+                    self.load('step1').then(() => {
                         self.currentPage.init()
-                    }).catch(function(e) {
+                    }).catch( (e) => {
                         console.error(e)
                     })
                 } else {
                     self.currentPage = self.pageMap[character]
-                    self.load(character).then(function() {
+                    self.load(character).then( () => {
                         self.currentPage.init()
-                    }).catch(function(e) {
+                    }).catch( (e) => {
                         console.error(e)
                     })    
                 }

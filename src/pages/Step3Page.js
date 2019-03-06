@@ -1,15 +1,16 @@
-var $ = require('jquery')
-var Step4Page = require('./Step4Page')
+const $ = require('jquery')
+const Step4Page = require('./Step4Page')
 
 class Step3Page {
+
     constructor(app){
         this.app= app
     }
 
     init() {
         $('#nameFeed').append(sessionStorage.getItem('name',name))
-        var self=this
-        $("#createLayer").on('click', function(){
+        let self=this
+        $("#createLayer").on('click', () => {
             self.app.forward('step4', new Step4Page(self.app))
         })
     }

@@ -1,9 +1,9 @@
-var $=require('jquery')
-var Step5Page = require('./Step5Page')
+const $=require('jquery')
+const Step5Page = require('./Step5Page')
 
 $.getScript( "/external/plugins.js")
 
-var layersGlobal = null
+let layersGlobal = null
 
 class Step4Page {
 
@@ -13,33 +13,39 @@ class Step4Page {
 
     init() {
         layersGlobal=JSON.parse(sessionStorage.getItem('layersGlobal'))
-        var self=this
-        $('#backStep4').on('click', function(){
+        let self=this
+        $('#backStep4').on('click', () => {
             self.app.forward('step3', self.app.pageMap['step3'])
         })
     
-        $('#saveStep4').on('click', function(){
-            var nameStep4=$("#nameStep4").val()
-            var isValueExisted=valueExists(layersGlobal,nameStep4)
+        $('#saveStep4').on('click', () => {
+
+            let nameStep4Id = $("#nameStep4")
+            let errorNameId = $('#errorName'), sanitizeNameId = $('#sanitizeName'), errorValueId = $("#errorValue")
+
+            let nameStep4=nameStep4Id.val()
+            let isValueExisted=valueExists(layersGlobal,nameStep4)            
             
-            if($("#nameStep4").sanitize()==-1) {
-                $('#errorValue, #errorName').hide()
-                $('#sanitizeName').show()
+            if(nameStep4Id.sanitize()==-1) {
+                errorValueId.add(errorNameId).hide()
+                sanitizeNameId.show()
             } else {
                 if(nameStep4=='') {
-                    $('#sanitizeName, #errorValue').hide()
-                    $('#errorName').show()
+                    sanitizeNameId.add(errorValueId).hide()
+                    errorNameId.show()
                 } else {
                     if(isValueExisted===true) {
-                        $('#sanitizeName, #errorName').hide()
-                        $('#errorValue').show()
+                        sanitizeNameId.add(errorNameId).hide()
+                        errorValueId.show()
                     } else {
-                        $('#modalSaveLayer').modal('show')
+                        let modalSaveId = $('#modalSaveLayer')
+
+                        modalSaveId.modal('show')
                         layersGlobal.push(nameStep4)
                         sessionStorage.setItem("layersGlobal",JSON.stringify(layersGlobal))
                         setTimeout(
-                            function() {
-                                $('#modalSaveLayer').modal('hide')
+                            () => {
+                                modalSaveId.modal('hide')
                                 self.app.forward('step5', new Step5Page(self.app))
                             }, 1500);
                     }
@@ -50,7 +56,7 @@ class Step4Page {
 }
 
 const valueExists = (layers,name) => {
-    for(var i=0; i<layers.length;i++){
+    for(let i=0; i<layers.length;i++){
         if(layers[i]===name) {
             return true;
         }

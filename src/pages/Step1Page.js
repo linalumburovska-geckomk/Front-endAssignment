@@ -1,5 +1,5 @@
-var $ = require('jquery')
-var Step2Page = require('./Step2Page')
+const $ = require('jquery')
+const Step2Page = require('./Step2Page')
 
 class Step1Page {
 
@@ -8,8 +8,8 @@ class Step1Page {
     }
 
     init() {
-        var self = this
-        $('#button1').on('click', function(e) {
+        let self = this
+        $('#button1').on('click',(e) => {
             e.preventDefault()
             self.app.forward('step2', new Step2Page(self.app))
         })
