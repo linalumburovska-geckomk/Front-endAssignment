@@ -5,6 +5,7 @@
   "private": true,
   "main": "./src/app.js",
   "dependencies": {
+    "bootstrap": "^4.3.1",
     "express": "^4.16.4",
     "jquery": "^3.3.1",
     "lodash": "^4.17.11",
@@ -14,13 +15,19 @@
   },
   "scripts": {
     "start": "run-s build watch:run",
-    "watch:run": "run-p watch:js watch:css server",
+    "watch:run": "run-p watch:js watch:css watch:external watch:html watch:lib server",
     "server": "node server",
-    "build": "run-s build:js build:css",
+    "build": "run-s build:js build:external build:css copy:html copy:lib",
     "watch:css": "watch -p './css/**/*.scss' -c 'npm run build:css'",
     "watch:js": "watch -p './src/**/*.js' -c 'npm run build:js'",
-    "build:css": "node-sass --output-style compressed css/style.scss public/style.css",
-    "build:js": "browserify src/app.js -o public/script.js -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ]",
+    "watch:external": "watch -p './external/**/*.js' -c 'npm run build:external'",
+    "watch:html": "watch -p './html/**/*.js' -c 'npm run copy:html'",
+    "watch:lib": "watch -p './lib/**/*.js' -c 'npm run copy:lib'",
+    "build:css": "node-sass --output-style compressed css/style.scss dist/style.css",
+    "build:js": "browserify src/app.js -o dist/script.js -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ]",
+    "build:external": "babel external/*.js --out-dir dist/external --plugins=@babel/plugin-proposal-class-properties --presets=@babel/preset-env",
+    "copy:html": "copyfiles -u 1 html/**/*.html dist",
+    "copy:lib": "copyfiles -u 1 lib/*.js dist/lib/",
     "test": "mocha"
   },
   "repository": {
@@ -34,11 +41,13 @@
   },
   "homepage": "https://github.com/linalumburovska-geckomk/Front-endAssignment#readme",
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
     "@babel/plugin-proposal-class-properties": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
     "babelify": "^10.0.0",
     "browserify": "^16.2.3",
+    "copyfiles": "^2.1.0",
     "node-sass": "^4.11.0",
     "npm-run-all": "^4.1.5",
     "watch-cli": "^0.2.3"

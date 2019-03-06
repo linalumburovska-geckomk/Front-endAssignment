@@ -1,6 +1,6 @@
 var $ = require('jquery')
 
-$.getScript( "/plugins.js")
+$.getScript( "/external/plugins.js")
 
 var index
 var layersGlobal

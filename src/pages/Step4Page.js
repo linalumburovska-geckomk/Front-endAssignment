@@ -1,7 +1,7 @@
 var $=require('jquery')
 var Step5Page = require('./Step5Page')
 
-$.getScript( "/plugins.js")
+$.getScript( "/external/plugins.js")
 
 var layersGlobal = null
 

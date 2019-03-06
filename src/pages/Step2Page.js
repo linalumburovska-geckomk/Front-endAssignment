@@ -5,7 +5,7 @@ var name=""
 var desc=""
 var image=""
 
-$.getScript( "/plugins.js")
+$.getScript( "/external/plugins.js")
 
 class Step2Page {
     constructor(app) {
