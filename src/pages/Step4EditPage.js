@@ -1,6 +1,6 @@
 const $ = require('jquery')
 
-$.getScript( "/external/plugins.js")
+require("../../external/plugins")
 
 let index
 let layersGlobal

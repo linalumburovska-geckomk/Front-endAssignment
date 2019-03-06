@@ -7,7 +7,6 @@
     
     createPlugin('sanitize', (element) => {
         var input = element.val()
-       
         if(input!==undefined) {
             var output = input.replace(/<script[^>]*?>.*?<\/script>/gi, '').
             replace(/<[\/\!]*?[^<>]*?>/gi, '').

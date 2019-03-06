@@ -1,7 +1,7 @@
 const $=require('jquery')
 const Step5Page = require('./Step5Page')
 
-$.getScript( "/external/plugins.js")
+require("../../external/plugins")
 
 let layersGlobal = null
 

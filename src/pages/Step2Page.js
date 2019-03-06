@@ -1,9 +1,9 @@
 const $ = require('jquery')
 const Step3Page = require('./Step3Page')
+require("../../external/plugins")
 
 let name="",desc="",image=""
 
-$.getScript( "/external/plugins.js")
 
 class Step2Page {
     

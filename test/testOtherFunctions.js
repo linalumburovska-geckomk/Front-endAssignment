@@ -1,5 +1,6 @@
-var assert = require('assert')
+const assert = require('assert')
 
+// ---------------------
 //My functions
 const valueExists = (layers, name) => {
     for(let i=0; i<layers.length;i++){
@@ -10,7 +11,7 @@ const valueExists = (layers, name) => {
     return false;
 }
 
-//Testing
+//Testing other functions
 describe('ValueExists', () => {
     it('checks if the value exists in an array', () => {
         assert.equal(valueExists(['Layer1','Layer2','Layer3'],'Layer1'), true)
