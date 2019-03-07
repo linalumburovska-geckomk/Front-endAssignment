@@ -11,6 +11,7 @@
     "lodash": "^4.17.11",
     "mocha": "^6.0.2",
     "requirejs": "^2.3.6",
+    "sinon": "^7.2.7",
     "uglify-js": "^3.4.9"
   },
   "scripts": {

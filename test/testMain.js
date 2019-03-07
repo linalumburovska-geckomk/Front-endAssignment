@@ -44,3 +44,23 @@ describe('Class main-constructor', () => {
         assert.equal(typeof main.data, 'object')
     })
 })
+
+
+//Test3
+describe('CLass main - adding pages in forward', () => {
+    it('checks if pages are not undefined so they can be added to pageMap', () => {
+        main.pageMap['step1'] = step1
+        expect(main.pageMap['step1']).to.not.equal(undefined)
+        main.pageMap['step2'] = step2
+        expect(main.pageMap['step2']).to.not.equal(undefined)
+        main.pageMap['step3'] = step3
+        expect(main.pageMap['step3']).to.not.equal(undefined)
+        main.pageMap['step4'] = step4
+        expect(main.pageMap['step4']).to.not.equal(undefined)
+        main.pageMap['step5'] = step5
+        expect(main.pageMap['step5']).to.not.equal(undefined)
+        main.pageMap['step4Edit'] = step4Edit
+        expect(main.pageMap['step4Edit']).to.not.equal(undefined)
+    })
+})
+
