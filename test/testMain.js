@@ -64,3 +64,12 @@ describe('CLass main - adding pages in forward', () => {
     })
 })
 
+//Test4
+describe('Test session storage', () => {
+    it('checks at the beginning if values in sessionStorage are empty', () => {
+        assert.equal(sessionStorage.getItem('index'), -1)
+        assert.equal(sessionStorage.getItem('clicked'), '')
+        assert.equal(sessionStorage.getItem('layersGlobal'), '[]')
+    })
+})
+

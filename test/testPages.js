@@ -5,6 +5,7 @@ const $ = global.jQuery = require('jquery')(window)
 const assert = require('assert')
 const expect = require('chai').expect
 const chai = require('chai')
+const sinon=require('sinon')
 
 let Main = require('../src/Main')
 let main = new Main()
@@ -29,6 +30,16 @@ describe('Class Step1Page-constructor', () => {
     it('checks its constructor', () => {
         assert.equal(typeof step1.app, 'object')
         expect(step1.app).equal(main)
+    })
+})
+
+describe('Class Step1Page- button', () => {
+    it('checks if button does the right forward', () => {
+        var e = {
+            preventDefault: sinon.spy()
+        }
+        $("#button1").on('click',e)
+        assert.equal(e.preventDefault.called, false)
     })
 })
 
