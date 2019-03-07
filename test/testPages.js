@@ -54,3 +54,78 @@ describe('Class Step2Page- alerts', () => {
         chai.assert.equal($("#sanitizeImage").is(":visible"), false)
     })
 })
+
+// ---------------------
+//Page3
+//Test4
+describe('Class Step3Page-constructor', () => {
+    it('checks its constructor', () => {
+        assert.equal(typeof step3.app, 'object')
+        expect(step3.app).equal(main)
+    })
+})
+
+//Test5
+describe('Class Step3Page-value', () => {
+    it('checks if feed value is not empty', () => {
+        expect($("#nameFeed")).to.not.equal("")
+    })
+})
+
+// ---------------------
+//Page4
+//Test6
+describe('Class Step4Page-constructor', () => {
+    it('checks its constructor', () => {
+        assert.equal(typeof step4.app, 'object')
+        expect(step4.app).equal(main)
+    })
+})
+
+//Test7
+describe('Class Step4Page-modal', () => {
+    it('checks if modal save is visible', () => {
+        chai.assert.equal($('#modalSaveLayer').is(":visible"), false)
+    })
+})
+
+//Test8
+describe('Class Step4Page-value', () => {
+    it('checks if name step4 value is not empty', () => {
+        expect($("#nameStep4")).to.not.equal("")
+    })
+})
+
+// ---------------------
+//Page5
+//Test9
+describe('Class Step5Page-constructor', () => {
+    it('checks its constructor', () => {
+        assert.equal(typeof step5.app, 'object')
+        expect(step5.app).equal(main)
+    })
+})
+
+// ---------------------
+//Page4Edit
+//Test10
+describe('Class Step4EditPage-constructor', () => {
+    it('checks its constructor', () => {
+        assert.equal(typeof step4Edit.app, 'object')
+        expect(step4Edit.app).equal(main)
+    })
+})
+
+//Test11
+describe('Class Step4EditPage-modal', () => {
+    it('checks if modal edit is visible', () => {
+        chai.assert.equal($('#modalEditLayer').is(":visible"), false)
+    })
+})
+
+//Test12
+describe('Class Step4EditPage-value', () => {
+    it('checks if name edit value is not empty', () => {
+        expect($("#nameEdit")).to.not.equal("")
+    })
+})
