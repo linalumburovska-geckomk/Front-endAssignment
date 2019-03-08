@@ -1,4 +1,4 @@
-const $ = require('jquery')
+const { $ } = require('../dom')
 const Step2Page = require('./Step2Page')
 
 class Step1Page {

@@ -1,4 +1,4 @@
-const $=require('jquery')
+const { $ } = require('../dom')
 const Step4EditPage = require('./Step4EditPage')
 
 let layersGlobal
@@ -25,13 +25,19 @@ class Step5Page {
         for(let i=0; i<layersGlobal.length;i++) {
             let layer=layersGlobal[i]
             let buttonEdit="<button class='btn btn-secondary editButton' id='" + i + "' >Edit</button>"
-            let appendRow="<tr><td>"+ layer +"</td><td>" + buttonEdit + "</td></tr>"
-            $('#tableLayers tbody').append(appendRow)
+            let tr = document.createElement("tr")
+            let td1 = document.createElement("td")
+            let td2 = document.createElement("td")
+            td1.innerHTML = layer
+            td2.innerHTML = buttonEdit
+            tr.appendChild(td1)
+            tr.appendChild(td2)
+            $('#tableLayers').appendRow(tr)
         }    
     
         for(let i=0; i<layersGlobal.length;i++) {
-            $("#"+i+"").click(function(){
-                index= $(this).attr('id')
+            $("#"+i+"").on('click',function(){
+                index= i
                 sessionStorage.setItem("index",index)
                 var add=layersGlobal[index]
                 clicked=add   

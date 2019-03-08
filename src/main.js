@@ -1,4 +1,4 @@
-const $ = require('jquery')
+const { $, ajax } = require('./dom')
 let clicked ='';
 let layersGlobal=[];
 let index=-1;
@@ -16,17 +16,18 @@ class Main {
     }
 
     load(url) {
-        return $.ajax({
+        return ajax({
                 async: true,
                 url: "steps/"+url+".html",
                 type: 'GET',
-            }).then( (data) => {
+            }).then((response) => {
                 $('#root').empty()
-                $('#root').append(data)
+                $('#root').append(response.data)
             })
     }
 
     forward(url,page) {
+        
         if (this.isPageValid(page)) {
             this.pageMap[url] = page
         }

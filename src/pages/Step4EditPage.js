@@ -1,6 +1,4 @@
-const $ = require('jquery')
-
-require("../../external/plugins")
+const { $ } = require('../dom')
 
 let index
 let layersGlobal
@@ -13,11 +11,11 @@ class Step4EditPage {
     }
 
     init() { 
-
+        // debugger
         index=sessionStorage.getItem('index')
         layersGlobal = JSON.parse(sessionStorage.getItem('layersGlobal'))
         clicked = sessionStorage.getItem('clicked')
-        $("#nameEdit").val(clicked)
+        $("#nameEdit").setValue(clicked)
     
         let self=this
         $("#backStep4Edit").on('click', () => {
@@ -33,15 +31,15 @@ class Step4EditPage {
             let isValueExisted=valueExists(layersGlobal,nameStep4)
     
             if(nameEditId.sanitize()==-1) {
-                errorValueId.add(errorNameId).hide()
+                errorValueId.hide(), errorNameId.hide()
                 sanitizeNameId.show()
             } else {
                 if(nameStep4=='') {
-                    sanitizeNameId.add(errorValueId).hide()
+                    sanitizeNameId.hide(), errorValueId.hide()
                     errorNameId.show()
                 } else {
                     if(isValueExisted===true) {
-                        sanitizeNameId.add(errorNameId).hide()
+                        sanitizeNameId.hide, errorNameId.hide()
                         errorValueId.show()
                     } else if(nameStep4!=''){
                         let modalEditId = $('#modalEditLayer')

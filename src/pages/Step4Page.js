@@ -1,7 +1,6 @@
-const $=require('jquery')
+const { $ } = require('../dom')
 const Step5Page = require('./Step5Page')
 
-require("../../external/plugins")
 
 let layersGlobal = null
 
@@ -27,15 +26,16 @@ class Step4Page {
             let isValueExisted=valueExists(layersGlobal,nameStep4)            
             
             if(nameStep4Id.sanitize()==-1) {
-                errorValueId.add(errorNameId).hide()
+                errorValueId.hide(), errorNameId.hide()
                 sanitizeNameId.show()
             } else {
                 if(nameStep4=='') {
-                    sanitizeNameId.add(errorValueId).hide()
+                    sanitizeNameId.hide(),errorValueId.hide()
                     errorNameId.show()
                 } else {
                     if(isValueExisted===true) {
-                        sanitizeNameId.add(errorNameId).hide()
+                        sanitizeNameId.hide()
+                        errorNameId.hide()
                         errorValueId.show()
                     } else {
                         let modalSaveId = $('#modalSaveLayer')
