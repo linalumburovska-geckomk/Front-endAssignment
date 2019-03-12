@@ -1,7 +1,8 @@
 const { JSDOM } = require('jsdom')
 const jsdom = new JSDOM('<!doctype html><html><body></body></html>')
-const { window } = jsdom
-const $ = global.jQuery = require('jquery')(window)
+const { window } =  jsdom
+global.document = window.document
+const { $ } = require('../src/dom')
 const assert = require('assert')
 const expect = require('chai').expect
 const chai = require('chai')
@@ -33,12 +34,11 @@ describe('Class Step1Page-constructor', () => {
     })
 })
 
-describe('Class Step1Page- button', () => {
-    it('checks if button does the right forward', () => {
+describe('Class Step1Page', () => {
+    it('Prevent default tested', () => {
         var e = {
             preventDefault: sinon.spy()
         }
-        $("#button1").on('click',e)
         assert.equal(e.preventDefault.called, false)
     })
 })
@@ -57,12 +57,12 @@ describe('Class Step2Page-constructor', () => {
 //Test3
 describe('Class Step2Page- alerts', () => {
     it('checks if alerts are visible', () => {
-        chai.assert.equal($("#errorName").is(":visible"), false)
-        chai.assert.equal($("#sanitizeName").is(":visible"), false)
-        chai.assert.equal($("#errorDescription").is(":visible"), false)
-        chai.assert.equal($("#sanitizeDescription").is(":visible"), false)
-        chai.assert.equal($("#errorImage").is(":visible"), false)
-        chai.assert.equal($("#sanitizeImage").is(":visible"), false)
+        chai.assert.equal($("#errorName").isVisible(), false)
+        chai.assert.equal($("#sanitizeName").isVisible(), false)
+        chai.assert.equal($("#errorDescription").isVisible(), false)
+        chai.assert.equal($("#sanitizeDescription").isVisible(), false)
+        chai.assert.equal($("#errorImage").isVisible(), false)
+        chai.assert.equal($("#sanitizeImage").isVisible(), false)
     })
 })
 
@@ -96,7 +96,7 @@ describe('Class Step4Page-constructor', () => {
 //Test7
 describe('Class Step4Page-modal', () => {
     it('checks if modal save is visible', () => {
-        chai.assert.equal($('#modalSaveLayer').is(":visible"), false)
+        chai.assert.equal($('#modalSaveLayer').isVisible(), false)
     })
 })
 
@@ -130,7 +130,7 @@ describe('Class Step4EditPage-constructor', () => {
 //Test11
 describe('Class Step4EditPage-modal', () => {
     it('checks if modal edit is visible', () => {
-        chai.assert.equal($('#modalEditLayer').is(":visible"), false)
+        chai.assert.equal($('#modalEditLayer').isVisible(), false)
     })
 })
 

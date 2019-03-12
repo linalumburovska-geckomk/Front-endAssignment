@@ -1,4 +1,4 @@
-export default class Element extends Array {
+class Element extends Array {
 
     constructor(elementList) {
         super()
@@ -107,4 +107,17 @@ export default class Element extends Array {
             return ""
         }
     }
+
+    isVisible() {
+        for(let el of this) {
+            if(el ===null || el.style.display ==="none") {
+                return false
+            } else {
+                return true
+            }
+        }
+        return this
+    }
 }
+
+module.exports = Element

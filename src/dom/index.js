@@ -1,4 +1,6 @@
-import Element from './Element'
+// import Element from './Element'
+
+let Element = require('./Element')
 
 let getByID = (selector) => {
     let id = selector.slice(1, selector.length)
@@ -13,6 +15,7 @@ let getByClass = (selector) => {
 }
 
 let $ = (selector) => {
+    
     if (selector[0]==="#") { 
         return getByID(selector)
     } else if (selector[0]==='.') { 
@@ -46,4 +49,8 @@ let ajax = ({ url, type , data, headers, json = false }) => {
     })
 }
 
-export { $, ajax }
+module.exports = {
+    $:$,
+    ajax:ajax
+}
+// export { $, ajax }

@@ -1,7 +1,3 @@
-const { JSDOM } = require('jsdom')
-const jsdom = new JSDOM('<!doctype html><html><body></body></html>')
-const { window } = jsdom
-const $ = global.jQuery = require('jquery')(window)
 const assert = require('assert')
 const expect = require('chai').expect
 
